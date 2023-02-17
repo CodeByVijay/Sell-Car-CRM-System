@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Contracts\Session\Session;
@@ -37,13 +38,23 @@ Route::name('admin.')->prefix('admin')->middleware('auth')->group(function () {
         return view('admin.home');
     })->name('home');
 
+    Route::get('/valuation/all-leads', function () {
+        return view('admin.leads');
+    })->name('leads');
+
     // Get Valuation Data
     Route::post('get-valuation-data',[HomeController::class,'loadData'])->name('loadData');
     // Get Valuation Data End
 
-    Route::get('/add-new-employee', function () {
+    Route::get('/employee/add-new-employee', function () {
         return view('admin.addEmp');
     })->name('addEmployee');
+
+    Route::get('/employee/employee-list', [EmployeeController::class,'listAllEmployee'])->name('listAllEmployee');
+    Route::post('/employee/add-employee', [EmployeeController::class,'addEditEmployee'])->name('addEditEmployee');
+    Route::post('/employee/employee-status', [EmployeeController::class,'employeeStatus'])->name('employeeStatus');
+    Route::get('/employee/employee-edit/{id}', [EmployeeController::class,'empEdit'])->name('empEdit');
+    Route::get('/employee/employee-delete/{id}', [EmployeeController::class,'empDelete'])->name('empDelete');
 
     Route::get('/profile', function () {
         return view('admin.profile');

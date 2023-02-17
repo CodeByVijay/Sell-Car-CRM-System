@@ -388,8 +388,8 @@
                             <span class="span_label">Show Per Page</span>
                         </div>
                     </div>
-                </div>
-            </div> --}}
+                    </div>
+                    </div> --}}
                     <div class="row">
                         <div class="col-md-2">
                             <div class="select_box">
@@ -563,9 +563,9 @@
         </section>
 
         <div class="card-box mb-30">
-            {{-- <div class="pd-20">
-        <h4 class="text-blue h4">Data Table with Checckbox select</h4>
-    </div> --}}
+                            {{-- <div class="pd-20">
+                        <h4 class="text-blue h4">Data Table with Checckbox select</h4>
+                            </div> --}}
             <div class="pt-20 pb-20 table-responsive">
                 <table class="checkbox-datatable table nowrap filterDataTable" id="valuationTable">
                     <thead>
@@ -691,8 +691,9 @@
                                                 </td>
                                             </tr>`);
                         })
-                    }else{
-                        $('#table_body').append(`<tr><td colspan="9" class="text-center"><span>No Data Found.</span></td></tr>`);
+                    } else {
+                        $('#table_body').append(
+                            `<tr><td colspan="9" class="text-center"><span>No Data Found.</span></td></tr>`);
                     }
                     $('.filterOpTab .active span').html(`(${response.count})`)
 
