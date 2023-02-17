@@ -103,6 +103,7 @@
     </div>
     <div class="menu-block customscroll">
         <div class="sidebar-menu">
+            @if (auth()->user()->is_admin == 1)
             <ul id="accordion-menu">
                 <li>
                     <div class="dropdown-divider"></div>
@@ -119,7 +120,7 @@
                         <span class="micon dw dw-user1"></span><span class="mtext">Employees</span>
                     </a>
                     <ul class="submenu">
-                        <li><a href="form-basic.html">Add New Employee</a></li>
+                        <li><a href="{{route('admin.addEmployee')}}">Add New Employee</a></li>
                         <li><a href="advanced-components.html">View Employees</a></li>
                     </ul>
                 </li>
@@ -147,6 +148,24 @@
                 </li>
 
             </ul>
+            @else
+            <ul id="accordion-menu">
+                <li>
+                    <div class="dropdown-divider"></div>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle no-arrow">
+                        <span class="micon dw dw-house-1"></span><span class="mtext">Home</span>
+                    </a>
+                </li>
+
+                <li>
+                    <div class="dropdown-divider"></div>
+                </li>
+
+            </ul>
+            @endif
+
         </div>
     </div>
 </div>

@@ -109,10 +109,16 @@
                     <span class="user-icon">
                         <img src="{{asset('admin/vendors/images/photo1.jpg')}}" alt="">
                     </span>
-                    <span class="user-name">Ross C. Lopez</span>
+                    <span class="user-name">{{ucfirst(auth()->user()->name)}}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                    @if (auth()->user()->is_admin == 1)
+
                     <a class="dropdown-item" href="{{route('admin.profile')}}"><i class="dw dw-user1"></i> Profile</a>
+                    @else
+                    <a class="dropdown-item" href="#"><i class="dw dw-user1"></i> Profile</a>
+
+                    @endif
                     <a class="dropdown-item" href="{{route('logout')}}"><i class="dw dw-logout"></i> Log Out</a>
                 </div>
             </div>

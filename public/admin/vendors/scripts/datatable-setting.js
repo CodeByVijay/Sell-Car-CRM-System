@@ -1,61 +1,6 @@
 $('document').ready(function(){
-	$('.data-table').DataTable({
-		scrollCollapse: true,
-		autoWidth: false,
-		responsive: true,
-		columnDefs: [{
-			targets: "datatable-nosort",
-			orderable: false,
-		}],
-		"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-		"language": {
-			"info": "_START_-_END_ of _TOTAL_ entries",
-			searchPlaceholder: "Search",
-			paginate: {
-				next: '<i class="ion-chevron-right"></i>',
-				previous: '<i class="ion-chevron-left"></i>'  
-			}
-		},
-	});
 
-	$('.data-table-export').DataTable({
-		scrollCollapse: true,
-		autoWidth: false,
-		responsive: true,
-		columnDefs: [{
-			targets: "datatable-nosort",
-			orderable: false,
-		}],
-		"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-		"language": {
-			"info": "_START_-_END_ of _TOTAL_ entries",
-			searchPlaceholder: "Search",
-			paginate: {
-				next: '<i class="ion-chevron-right"></i>',
-				previous: '<i class="ion-chevron-left"></i>'  
-			}
-		},
-		dom: 'Bfrtp',
-		buttons: [
-		'copy', 'csv', 'pdf', 'print'
-		]
-	});
 
-	var table = $('.select-row').DataTable();
-	$('.select-row tbody').on('click', 'tr', function () {
-		if ($(this).hasClass('selected')) {
-			$(this).removeClass('selected');
-		}
-		else {
-			table.$('tr.selected').removeClass('selected');
-			$(this).addClass('selected');
-		}
-	});
-
-	var multipletable = $('.multiple-select-row').DataTable();
-	$('.multiple-select-row tbody').on('click', 'tr', function () {
-		$(this).toggleClass('selected');
-	});
 	var table = $('.checkbox-datatable').DataTable({
 		'scrollCollapse': true,
 		'autoWidth': false,
@@ -66,7 +11,7 @@ $('document').ready(function(){
 			searchPlaceholder: "Search",
 			paginate: {
 				next: '<i class="ion-chevron-right"></i>',
-				previous: '<i class="ion-chevron-left"></i>'  
+				previous: '<i class="ion-chevron-left"></i>'
 			}
 		},
 		'columnDefs': [{
@@ -94,4 +39,6 @@ $('document').ready(function(){
 			}
 		}
 	});
+
+    
 });
