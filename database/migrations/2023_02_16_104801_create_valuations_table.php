@@ -40,7 +40,7 @@ class CreateValuationsTable extends Migration
             $table->string('address_line2')->nullable();
             $table->string('address_line3')->nullable();
             $table->string('form_type')->comment('1=automatic,2=manual');
-            $table->string('status')->default('pending')->comment('pending,in-progress,offer-made,accepted,undecided,declined,dealt-needs-delivery,delivery-arranged,delivered,cancelled');
+            $table->string('status')->nullable()->comment('pending,in-progress,offer-made,accepted,undecided,declined,dealt-needs-delivery,delivery-arranged,delivered,cancelled');
             $table->tinyInteger('assign_to')->nullable()->comment('The ID of the employee to whom this lead is assigned.');
             $table->softDeletes();
             $table->timestamps();

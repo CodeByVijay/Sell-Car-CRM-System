@@ -37,19 +37,7 @@
             </div>
             <div class="pd-20 bg-white border-radius-4 box-shadow mb-30">
 
-                {{-- Notification --}}
-                @if ($message = session()->get('success'))
-                    <div class="alert alert-info alert-block">
-                        <button type="button" class="close" data-dismiss="alert">×</button>
-                        <strong>{{ $message }}</strong>
-                    </div>
-                @elseif($message = session()->get('faild'))
-                    <div class="alert alert-danger alert-block">
-                        <button type="button" class="close" data-dismiss="alert">×</button>
-                        <strong>{{ $message }}</strong>
-                    </div>
-                @endif
-                {{-- Notification End --}}
+                @include('notification')
 
                 <div class="card-box mb-30">
                     <a href="{{ route('admin.addEmployee') }}" class="float-right btn btn-success btn-sm my-3 mx-2"><i
@@ -107,14 +95,18 @@
                                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
                                                     <a class="dropdown-item" href="#"><i class="dw dw-eye"></i>
                                                         View</a>
-                                                    <a class="dropdown-item" href="{{route('admin.empEdit',$row->id)}}"><i class="dw dw-edit2"></i>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('admin.empEdit', $row->id) }}"><i
+                                                            class="dw dw-edit2"></i>
                                                         Edit</a>
-                                                    <a class="dropdown-item" href="javascript:void(0)" onclick="changePassword({{$row->id}})"><i class="dw dw-password"></i>
+                                                    <a class="dropdown-item" href="javascript:void(0)"
+                                                        onclick="changePassword({{ $row->id }})"><i
+                                                            class="dw dw-password"></i>
                                                         Change Password</a>
-                                                    <form action="{{ route('admin.empDelete', $row->id) }}" id="empDelete{{$row->id}}"
-                                                        method="get">
-                                                        <a class="dropdown-item empDelete" data-id="{{$row->id}}" href="javascript:void(0)"><i
-                                                                class="dw dw-delete-3"></i>
+                                                    <form action="{{ route('admin.empDelete', $row->id) }}"
+                                                        id="empDelete{{ $row->id }}" method="get">
+                                                        <a class="dropdown-item empDelete" data-id="{{ $row->id }}"
+                                                            href="javascript:void(0)"><i class="dw dw-delete-3"></i>
                                                             Delete</a>
                                                     </form>
                                                 </div>
@@ -129,36 +121,37 @@
             </div>
 
 
-{{-- Change Password Model --}}
-<div class="modal fade" id="changePassword" tabindex="-1" aria-labelledby="changePasswordLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="changePasswordLabel">New message</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="form-group">
-              <label for="recipient-name" class="col-form-label">Recipient:</label>
-              <input type="text" class="form-control" id="recipient-name">
+            {{-- Change Password Model --}}
+            <div class="modal fade" id="changePassword" tabindex="-1" aria-labelledby="changePasswordLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="changePasswordLabel">New message</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">Recipient:</label>
+                                    <input type="text" class="form-control" id="recipient-name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">Message:</label>
+                                    <textarea class="form-control" id="message-text"></textarea>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Send message</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-              <label for="message-text" class="col-form-label">Message:</label>
-              <textarea class="form-control" id="message-text"></textarea>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Send message</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  {{-- Change Password Model  --}}
+            {{-- Change Password Model  --}}
 
 
         @endsection
@@ -173,7 +166,7 @@
 
                     Swal.fire({
                         title: 'Are you sure?',
-                        text: "Change status this employee!",
+                        text: "You change status this employee!",
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
@@ -218,12 +211,12 @@
                     empId = $(this).data('id')
                     Swal.fire({
                         title: 'Are you sure?',
-                        text: "Change status this employee!",
+                        text: "You won't be able to revert this!",
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
                         cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, change it!'
+                        confirmButtonText: 'Yes, delete it!'
                     }).then((result) => {
                         if (result.isConfirmed) {
                             $(`#empDelete${empId}`).submit()
@@ -233,10 +226,9 @@
 
 
                 // Change Password Code
-                function changePassword(id){
+                function changePassword(id) {
                     alert(id)
                 }
                 // Change Password Code End
-
             </script>
         @endpush

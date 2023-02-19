@@ -1,0 +1,296 @@
+.table_box {
+    border: 1px solid #edecec;
+}
+
+.table_box input {
+    width: 17px;
+    height: 17px;
+}
+
+select.status,
+select.assign_box,
+.show_page select {
+    background-position: center right;
+    border: none;
+    background-color: transparent;
+    padding: 5px;
+    color: #777;
+    border-bottom: 1px solid #999;
+}
+
+select.status:focus-visible,
+select.assign_box:focus-visible,
+.show_page select:focus-visible,
+.select_box select:focus-visible {
+    outline: none;
+}
+
+thead.table_head {
+    background: #edecec;
+}
+
+.table_box td,
+.table_box th {
+    padding: 20px 15px;
+    text-transform: uppercase;
+}
+
+a.vrm_box {
+    color: #777;
+    text-decoration: underline;
+}
+
+a.vrm_box:hover {
+    color: #680089;
+}
+
+.table_box th {
+    text-transform: uppercase;
+    color: #333;
+}
+
+.table_box td {
+    color: #777;
+}
+
+.table_main {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.table_body tr:nth-child(even) {
+    background: #edecec;
+}
+
+p.actions i {
+    color: #680089;
+    font-size: 13px;
+}
+
+p.actions a {
+    border: 1px solid #680089;
+    color: #680089;
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 5px;
+    margin: 2px;
+}
+
+p.actions a:hover {
+    background: #680089;
+}
+
+p.actions a:hover i {
+    color: #fff;
+}
+
+.top_search_box {
+    display: flex;
+    justify-content: space-between;
+}
+
+.show_page select,
+.select_box select,
+.select_box input {
+    width: 100%;
+    border: none;
+    background-color: transparent;
+    border-bottom: 1px solid #ddd;
+    padding: .75em .75em .75em 0;
+    color: #000;
+    margin-bottom: 5px;
+    background-position: center right;
+
+}
+
+.search_box button {
+    position: absolute;
+    right: 0;
+    background: none;
+    width: auto;
+    height: auto;
+    box-shadow: none;
+    padding: .75em;
+    color: #000;
+}
+
+.search_box input {
+    color: #000;
+    border: none;
+    background: transparent;
+    border-bottom: 1px solid #ddd;
+    padding-left: 0;
+}
+
+.search_box {
+    position: relative;
+}
+
+.span_label {
+    color: #680089;
+    font-size: 13px;
+}
+
+.search_box_main {
+    margin-top: 35px;
+}
+
+.select_box {
+    padding-right: 10px;
+}
+
+section.search_box_main .row {
+    margin-bottom: 15px;
+}
+
+.select_box input {
+    padding-right: 0;
+}
+
+p.actions {
+    text-align: right;
+    max-width: 100px;
+}
+
+.tab_section ul li a.active,
+.tab_section ul li a:hover {
+    color: #680089;
+}
+
+.tab_section ul li a.active:after,
+.tab_section ul li a:hover:after {
+    opacity: 1;
+    background: #680089;
+}
+
+.tab_section ul li a:after {
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    opacity: 0;
+    background: #000;
+    content: '';
+    left: 0;
+    bottom: -5px;
+}
+
+.select_box input:focus-visible {
+    outline: none;
+}
+
+td.action_box select {
+    display: none;
+    background-color: transparent;
+    background-position: 25px center;
+    padding: 4px 10px;
+    border: 1px solid #680089;
+    border-radius: 5px;
+    margin: 2px;
+    color: #680089;
+    width: 45px;
+    background-image: url('https://dorksd10.sg-host.com/wp-content/uploads/2023/02/down_arrow-removebg-preview.png');
+    float: right;
+}
+
+.tab_section ul li a span {
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+td.action_box select:focus-visible {
+    outline: none;
+}
+
+.search_box input:focus-visible {
+    outline: none;
+}
+
+.create_btn,
+.filter_btn {
+    text-align: right;
+    margin-top: 30px;
+}
+
+
+.filter_btn button {
+    box-shadow: none;
+    background: #1302ff;
+    color: #fff;
+    text-align: center;
+    font-weight: 600;
+    width: 25%;
+    padding: 15px 0;
+    border: none;
+    border-radius: 30px;
+}
+
+.create_btn button {
+    box-shadow: none;
+    background: #680089;
+    color: #fff;
+    text-align: center;
+    font-weight: 600;
+    width: 100%;
+    padding: 15px 0;
+    border: none;
+    border-radius: 30px;
+}
+
+.create_btn {
+    text-align: right;
+    margin-top: 30px;
+    max-width: 310px;
+    float: right;
+    width: 100%;
+}
+
+.tab_section ul {
+    padding: 0;
+    list-style: none;
+    margin: 0;
+    display: flex;
+    gap: 40px;
+    width: 100%;
+}
+
+.tab_section ul li a {
+    color: #000;
+    text-decoration: none;
+    width: max-content;
+    position: relative;
+    display: flex;
+}
+
+section.tab_section_main {
+    margin-top: 45px;
+}
+
+.tab_section {
+    display: flex;
+    overflow-x: scroll;
+    padding-bottom: 25px;
+}
+
+.tab_section ul li {
+    width: max-content;
+}
+
+@media screen and (max-width: 767px) {
+    section.search_box_main .col-md-2 {
+        margin-bottom: 10px;
+    }
+
+    .top_search_box {
+        flex-wrap: wrap;
+    }
+
+    .search_box,
+    .search_box input,
+    .show_page {
+        width: 100%;
+    }
+
+    .select_box {
+        padding-right: 0;
+    }
+}

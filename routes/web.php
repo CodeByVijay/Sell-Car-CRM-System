@@ -3,6 +3,8 @@
 use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Employee\HomeController as EmployeeHomeController;
+use App\Models\User;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -31,30 +33,43 @@ Route::get('/reset-password', function () {
     return view('auth.reset_password');
 })->name('reset_password');
 
-Route::post('/login',[AuthController::class,'login'])->name('auth.login');
+Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 
-Route::name('admin.')->prefix('admin')->middleware('auth')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('admin.home');
-    })->name('home');
+Route::name('admin.')->prefix('admin')->middleware(['auth','admin'])->group(function () {
+    Route::get('/dashboard',[HomeController::class,'home'])->name('home');
 
+
+    // Valuation Routes
     Route::get('/valuation/all-leads', function () {
-        return view('admin.leads');
+        $data['employees'] = User::where('is_admin', 0)->get();
+        return view('admin.leads',$data);
     })->name('leads');
+    Route::post('/get-valuation-data', [HomeController::class, 'loadData'])->name('loadData');
+    Route::post('/change-valuation-status', [HomeController::class, 'changeValStatus']);
+    Route::post('/employee-assign-lead', [HomeController::class, 'assignLead']);
+    // Delete Lead(Archive)
+    Route::post('/archive-lead', [HomeController::class, 'archiveLead']);
+    // Valuation Routes
 
-    // Get Valuation Data
-    Route::post('get-valuation-data',[HomeController::class,'loadData'])->name('loadData');
-    // Get Valuation Data End
+    // Archive Lead section Route
+    Route::get('/valuation/show-archive-leads',[HomeController::class,'getArchiveLeads'])->name('getArchiveLeads');
+    Route::post('/valuation/restore-lead',[HomeController::class,'restoreArchiveLeads'])->name('restoreArchiveLeads');
+    Route::post('/valuation/delete-lead',[HomeController::class,'deleteArchiveLeads'])->name('deleteArchiveLeads');
+    // Archive Lead section Route End
 
+
+    // Employees Route
     Route::get('/employee/add-new-employee', function () {
         return view('admin.addEmp');
     })->name('addEmployee');
+    Route::get('/employee/employee-list', [EmployeeController::class, 'listAllEmployee'])->name('listAllEmployee');
+    Route::post('/employee/add-employee', [EmployeeController::class, 'addEditEmployee'])->name('addEditEmployee');
+    Route::post('/employee/employee-status', [EmployeeController::class, 'employeeStatus'])->name('employeeStatus');
+    Route::get('/employee/employee-edit/{id}', [EmployeeController::class, 'empEdit'])->name('empEdit');
+    Route::get('/employee/employee-delete/{id}', [EmployeeController::class, 'empDelete'])->name('empDelete');
 
-    Route::get('/employee/employee-list', [EmployeeController::class,'listAllEmployee'])->name('listAllEmployee');
-    Route::post('/employee/add-employee', [EmployeeController::class,'addEditEmployee'])->name('addEditEmployee');
-    Route::post('/employee/employee-status', [EmployeeController::class,'employeeStatus'])->name('employeeStatus');
-    Route::get('/employee/employee-edit/{id}', [EmployeeController::class,'empEdit'])->name('empEdit');
-    Route::get('/employee/employee-delete/{id}', [EmployeeController::class,'empDelete'])->name('empDelete');
+    // Employees Route end
+
 
     Route::get('/profile', function () {
         return view('admin.profile');
@@ -62,13 +77,11 @@ Route::name('admin.')->prefix('admin')->middleware('auth')->group(function () {
 });
 
 
-Route::name('employee.')->prefix('employee')->middleware('auth')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('admin.home');
-    })->name('home');
+Route::name('employee.')->prefix('employee')->middleware(['auth','employee'])->group(function () {
+    Route::get('/dashboard',[EmployeeHomeController::class,'home'])->name('home');
 
     // Get Valuation Data
-    Route::post('get-valuation-data',[HomeController::class,'loadData'])->name('loadData');
+    Route::post('get-valuation-data', [HomeController::class, 'loadData'])->name('loadData');
     // Get Valuation Data End
 
     Route::get('/profile', function () {
@@ -76,4 +89,4 @@ Route::name('employee.')->prefix('employee')->middleware('auth')->group(function
     })->name('profile');
 });
 
-Route::get('/logout', [AuthController::class,'logout'])->name('logout');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');

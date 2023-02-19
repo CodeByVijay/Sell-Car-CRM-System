@@ -120,7 +120,7 @@
                             <li><a href="{{ route('admin.leads') }}"
                                     class="{{ request()->is('admin/valuation/all-leads') ? 'active' : '' }}">View All
                                     Leads</a></li>
-                            <li><a href="basic-table.html">All Archive Leads</a></li>
+                            <li><a class="{{ request()->is('admin/valuation/show-archive-leads') ? 'active' : '' }}" href="{{route('admin.getArchiveLeads')}}">All Archive Leads</a></li>
                         </ul>
                     </li>
 
