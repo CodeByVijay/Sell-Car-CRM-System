@@ -65,6 +65,13 @@ class EmployeeController extends Controller
         return view('admin.editEmp', compact('employee'));
     }
 
+    public function empPasswordChange(Request $req){
+        $emp = User::find($req->emp_id);
+        $emp->password = Hash::make($req->password);
+        $emp->update();
+        return response()->json(['msg'=>"success"]);
+    }
+
     public function empDelete($id)
     {
         User::find($id)->delete();

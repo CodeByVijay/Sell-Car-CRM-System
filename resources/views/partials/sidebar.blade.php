@@ -138,12 +138,12 @@
                         </ul>
                     </li>
 
-                    <li class="dropdown">
-                        <a href="javascript:;" class="dropdown-toggle">
+                    <li class="dropdown {{ request()->is('admin/settings*') ? 'show' : '' }}">
+                        <a href="javascript:void(0);" class="dropdown-toggle {{ request()->is('admin/settings*') ? 'show' : '' }}">
                             <span class="micon dw dw-settings2"></span><span class="mtext"> Settings</span>
                         </a>
-                        <ul class="submenu">
-                            <li><a href="ui-buttons.html">SMTP Setting</a></li>
+                        <ul class="submenu" style="display: {{ request()->is('admin/settings*') ? 'block' : 'none' }}">
+                            <li><a href="{{route('admin.mailSetting')}}" class="{{ (request()->is('admin/settings/mail-setting'))||(request()->is('admin/settings/mail-setting*')) ? 'active' : '' }}">Mail Setting</a></li>
                         </ul>
                     </li>
 

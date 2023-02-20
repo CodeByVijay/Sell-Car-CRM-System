@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\HomeController;
+use App\Http\Controllers\Admin\MailSettingController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Employee\HomeController as EmployeeHomeController;
 use App\Models\User;
@@ -67,8 +68,20 @@ Route::name('admin.')->prefix('admin')->middleware(['auth','admin'])->group(func
     Route::post('/employee/employee-status', [EmployeeController::class, 'employeeStatus'])->name('employeeStatus');
     Route::get('/employee/employee-edit/{id}', [EmployeeController::class, 'empEdit'])->name('empEdit');
     Route::get('/employee/employee-delete/{id}', [EmployeeController::class, 'empDelete'])->name('empDelete');
-
+    Route::post('/employee/password-change', [EmployeeController::class, 'empPasswordChange'])->name('empPasswordChange');
     // Employees Route end
+
+    // Mail Setting Routes
+    Route::get('settings/mail-setting',[MailSettingController::class,'index'])->name('mailSetting');
+    Route::get('settings/mail-setting/create',function(){
+return view('admin.addMailSetting');
+    })->name('mailSettingCreate');
+    Route::post('settings/mail-setting/add',[MailSettingController::class,'addEditMailSetting'])->name('addEditMailSetting');
+    Route::get('settings/mail-setting/edit/{id}',[MailSettingController::class,'editMailSettingForm'])->name('editMailSettingForm');
+    Route::get('settings/mail-setting/delete/{id}',[MailSettingController::class,'deleteMailSetting'])->name('deleteMailSetting');
+    Route::get('settings/mail-setting/use-mail/{id}',[MailSettingController::class,'useMailSetting'])->name('useMailSetting');
+    Route::post('settings/mail-setting/test-mail',[MailSettingController::class,'sendTestMail'])->name('sendTestMail');
+    // Mail Setting Routes End
 
 
     Route::get('/profile', function () {

@@ -127,26 +127,37 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="changePasswordLabel">New message</h5>
+                            <h5 class="modal-title" id="changePasswordLabel">Change Password</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form>
+                            <form id="changePasswordForm">
+                                <input type="hidden" name="emp_id" id="emp_id">
                                 <div class="form-group">
-                                    <label for="recipient-name" class="col-form-label">Recipient:</label>
-                                    <input type="text" class="form-control" id="recipient-name">
+                                    <label for="password" class="col-form-label">Password:</label>
+                                    <input type="password" class="form-control" id="password">
                                 </div>
+
                                 <div class="form-group">
-                                    <label for="message-text" class="col-form-label">Message:</label>
-                                    <textarea class="form-control" id="message-text"></textarea>
+                                    <label for="con_Password" class="col-form-label">Confirm Password:</label>
+                                    <input type="password" class="form-control" id="con_Password">
+                                    <span id="msgSpan"></span>
                                 </div>
+                                <div class="form-inline">
+                                    <div class="dt-checkbox">
+                                        <input type="checkbox" id="viewPass">
+                                        <span class="dt-checkbox-label"></span>
+                                    </div> &nbsp;&nbsp;
+                                    <label class="sdfsdf" for="viewPass">View Password</label>
+                                </div>
+
                             </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Send message</button>
+                            <button type="button" class="btn btn-primary" id="changePassBtn">Change Password</button>
                         </div>
                     </div>
                 </div>
@@ -224,11 +235,88 @@
                     })
                 })
 
+                // Show-Hide Password
+                $(document).on('click', '#viewPass', function() {
+                    var x = document.getElementById("password");
+                    var y = document.getElementById("con_Password");
+                    if (x.type === "password" && y.type === 'password') {
+                        x.type = "text";
+                        y.type = "text";
+                    } else {
+                        x.type = "password";
+                        y.type = "password";
+                    }
+                })
+                // Show-Hide Password End
+
+                // Change Password Model Open
+                let changePWbtn = $('#changePassBtn');
+                changePWbtn.attr('disabled', true)
+                let modal = $('#changePassword')
+                let msg = $("#msgSpan");
+                msg.html('')
+
+                function changePassword(id) {
+                    let empId = id;
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You want to be change password this employee!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, change it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#emp_id').val(empId)
+                            modal.modal('show')
+                        }
+                    })
+
+                }
+                // Change Password Model Open End
+
+                // Check Password & Confirm Password same
+                $("#con_Password, #password").on('keyup', function() {
+                    var password = $("#password").val();
+                    var confirmPassword = $("#con_Password").val();
+                    if (password != confirmPassword) {
+                        msg.html("Password does not match !").css("color", "red");
+                        changePWbtn.attr('disabled', true)
+                    } else {
+                        msg.html("Password match !").css("color", "green");
+                        changePWbtn.attr('disabled', false)
+                    }
+                });
+                // Check Password & Confirm Password same
 
                 // Change Password Code
-                function changePassword(id) {
-                    alert(id)
-                }
+                $(document).on('click', '#changePassBtn', function() {
+                    let password = $('#password').val()
+                    let emp_id = $('#emp_id').val()
+
+                    $.ajax({
+                        type: "post",
+                        url: "{{ route('admin.empPasswordChange') }}",
+                        data: {
+                            "emp_id": emp_id,
+                            "password": password
+                        },
+                        success: function(response) {
+                            if (response.msg === 'success') {
+                                Swal.fire(
+                                    'Great!',
+                                    'Employee password has been changed.',
+                                    'success'
+                                );
+                                modal.modal('hide');
+                                msg.html('')
+                                $('#changePasswordForm')[0].reset();
+
+                            }
+                        }
+                    });
+                })
                 // Change Password Code End
             </script>
         @endpush

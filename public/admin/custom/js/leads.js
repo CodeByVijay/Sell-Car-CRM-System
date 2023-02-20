@@ -225,6 +225,7 @@ $(document).on('click', '#assignLead', function () {
             text: 'Please select any one employee!',
             // footer: '<a href="">Why do I have this issue?</a>'
         })
+
     }
 })
 //Assign Employee End
@@ -287,9 +288,12 @@ $(document).on('click', '.multipleLeadDelete', function () {
                         }
                     }
                 });
-            } else {
-                loadData(getTabOption, table);
             }
+            // else {
+            //     loadData(getTabOption, table);
+            //     $("#master").prop('checked', false);
+
+            // }
         })
     } else {
         Swal.fire({
