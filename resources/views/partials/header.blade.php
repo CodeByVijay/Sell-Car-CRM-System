@@ -1,3 +1,6 @@
+<?php
+use App\Models\Notification;
+?>
 <div class="header">
     <div class="header-left">
         <div class="menu-icon dw dw-menu"></div>
@@ -50,54 +53,50 @@
         <div class="user-notification">
             <div class="dropdown">
                 <a class="dropdown-toggle no-arrow" href="#" role="button" data-toggle="dropdown">
-                    <i class="icon-copy dw dw-notification"></i>
-                    <span class="badge notification-active"></span>
+                    <i class="dw dw-notification"></i>
+                    <?php
+                    if (auth()->user()->is_admin == 0) {
+                        $notifications = Notification::where('user_id', auth()->user()->id)
+                            ->orWhere('user_id', 0)
+                            ->latest()
+                            ->take(5)
+                            ->get();
+                    } else {
+                        $notifications = Notification::where('user_id', auth()->user()->id)
+                            ->latest()
+                            ->take(5)
+                            ->get();
+                    }
+                    ?>
+                    @if (count($notifications) > 0)
+                        <span class="badge notification-active"></span>
+                    @endif
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
+                    @if (count($notifications) > 0)
+                        <div class="text-right">
+                            <a href="#" class="btn btn-success btn-sm mb-3">View All</a>
+                        </div>
+                    @endif
+
                     <div class="notification-list mx-h-350 customscroll">
                         <ul>
-                            <li>
-                                <a href="#">
-                                    <img src="{{asset('admin/vendors/images/img.jpg')}}" alt="">
-                                    <h3>John Doe</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed...</p>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <img src="{{asset('admin/vendors/images/photo1.jpg')}}" alt="">
-                                    <h3>Lea R. Frith</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed...</p>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <img src="{{asset('admin/vendors/images/photo2.jpg')}}" alt="">
-                                    <h3>Erik L. Richards</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed...</p>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <img src="{{asset('admin/vendors/images/photo3.jpg')}}" alt="">
-                                    <h3>John Doe</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed...</p>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <img src="{{asset('admin/vendors/images/photo4.jpg')}}" alt="">
-                                    <h3>Renee I. Hansen</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed...</p>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <img src="{{asset('admin/vendors/images/img.jpg')}}" alt="">
-                                    <h3>Vicki M. Coleman</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed...</p>
-                                </a>
-                            </li>
+                            @forelse ($notifications as $row)
+                                <li>
+                                    <a href="javascript:void(0)">
+                                        <img src="https://static.thenounproject.com/png/125745-200.png" alt=""
+                                            width="50" height="50">
+                                        <h3 class="text-primary">{{ $row->sender_name }}</h3><span>
+                                            {{ $row->created_at->diffForHumans() }}</span>
+                                        <h6>{{ $row->subject }}</h6>
+                                        <p>{{ $row->msg }}</p>
+                                    </a>
+                                </li>
+                            @empty
+                                <li>
+                                    <a href="#" class="text-center">No Notification Found.</a>
+                                </li>
+                            @endforelse
                         </ul>
                     </div>
                 </div>
@@ -107,19 +106,18 @@
             <div class="dropdown">
                 <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown">
                     <span class="user-icon">
-                        <img src="{{asset('admin/vendors/images/photo1.jpg')}}" alt="">
+                        <img src="{{ asset('admin/vendors/images/photo1.jpg') }}" alt="">
                     </span>
-                    <span class="user-name">{{ucfirst(auth()->user()->name)}}</span>
+                    <span class="user-name">{{ ucfirst(auth()->user()->name) }}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
                     @if (auth()->user()->is_admin == 1)
-
-                    <a class="dropdown-item" href="{{route('admin.profile')}}"><i class="dw dw-user1"></i> Profile</a>
+                        <a class="dropdown-item" href="{{ route('admin.profile') }}"><i class="dw dw-user1"></i>
+                            Profile</a>
                     @else
-                    <a class="dropdown-item" href="#"><i class="dw dw-user1"></i> Profile</a>
-
+                        <a class="dropdown-item" href="#"><i class="dw dw-user1"></i> Profile</a>
                     @endif
-                    <a class="dropdown-item" href="{{route('logout')}}"><i class="dw dw-logout"></i> Log Out</a>
+                    <a class="dropdown-item" href="{{ route('logout') }}"><i class="dw dw-logout"></i> Log Out</a>
                 </div>
             </div>
         </div>

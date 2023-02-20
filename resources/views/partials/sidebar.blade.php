@@ -144,6 +144,8 @@
                         </a>
                         <ul class="submenu" style="display: {{ request()->is('admin/settings*') ? 'block' : 'none' }}">
                             <li><a href="{{route('admin.mailSetting')}}" class="{{ (request()->is('admin/settings/mail-setting'))||(request()->is('admin/settings/mail-setting*')) ? 'active' : '' }}">Mail Setting</a></li>
+                            <li><a href="{{route('admin.notifications')}}" class="{{ (request()->is('admin/settings/notificatins'))||(request()->is('admin/settings/notificatins*')) ? 'active' : '' }}">Notifications</a></li>
+
                         </ul>
                     </li>
 

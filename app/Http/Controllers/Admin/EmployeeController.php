@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\MailSetting;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class EmployeeController extends Controller
 {
@@ -33,6 +35,8 @@ class EmployeeController extends Controller
             ]);
             $employee = new User();
             $msg = 'Added';
+
+
         }
 
         $employee->title = $req->title;
@@ -47,6 +51,27 @@ class EmployeeController extends Controller
         $employee->country = $req->country;
         $employee->postcode = $req->postcode;
         $employee->save();
+
+        $mailData = MailSetting::where('status',1)->first();
+        if($mailData){
+            $data = [
+                'name'=>$req->title.' '.ucfirst($req->name),
+                'email'=>$req->email,
+                'mobile'=>$req->mobile,
+                'password'=>$req->password,
+                'gender'=>$req->gender,
+                'from_address'=>$mailData->from_address,
+                'from_name'=>$mailData->from_name,
+            ];
+
+            if($msg == 'Added'){
+                Mail::send('mail.welcome', $data, function ($message) use ($data) {
+                    $message->to($data['email'], $data['name'])
+                        ->subject($data['name'].' - Welcome to team (Sell Car Company).');
+                    $message->from($data['from_address'], $data['from_name']);
+                });
+            }
+        }
 
         return redirect()->route('admin.listAllEmployee')->with('success', ucfirst($req->name) . ' - Profile Has Been  ' . $msg . ' Successfully.');
     }
@@ -77,4 +102,5 @@ class EmployeeController extends Controller
         User::find($id)->delete();
         return redirect()->route('admin.listAllEmployee')->with('success', 'Employee Has Beed Deleted.');
     }
+
 }

@@ -80,10 +80,10 @@ class MailSettingController extends Controller
                 'name' => $mail->from_name,
             ];
 
-            Mail::send('testMail', $data, function ($message) use ($data, $req) {
+            Mail::send('mail.testMail', $data, function ($message) use ($data, $req) {
                 $message->to($req->to, $req->name)
                     ->subject('Sell Car CRM Testing Mail');
-                $message->from($data['from'], $data['name']);
+                // $message->from($data['from'], $data['name']);
             });
             return redirect()->back()->with('success', 'Test email sent successfully');
         } catch (\Exception $e) {

@@ -72,18 +72,18 @@
     <div class="pd-20 bg-white border-radius-4 box-shadow mb-30">
 
         <div class="row">
-            <div class="col-xl-12 mb-30">
+            <div class="col-xl-8 mb-30">
                 <div class="card-box height-100-p pd-20">
-                    <h2 class="h4 mb-20">Activity</h2>
+                    <h2 class="h4 mb-20">All Leads-<?php echo date('Y')?></h2>
                     <div id="chart5"></div>
                 </div>
             </div>
-            {{-- <div class="col-xl-4 mb-30">
+            <div class="col-xl-4 mb-30">
                 <div class="card-box height-100-p pd-20">
-                    <h2 class="h4 mb-20">Lead Target</h2>
+                    <h2 class="h4 mb-20">Complete Leads</h2>
                     <div id="chart6"></div>
                 </div>
-            </div> --}}
+            </div>
         </div>
 
         {{-- <div class="container">
@@ -338,8 +338,10 @@
 @endsection
 @push('script')
     <script src="{{ asset('admin/custom/js/leads.js') }}"></script>
-
     <script>
+    var aData = JSON.parse(`<?php echo $allLeads; ?>`);
+
+
         var options5 = {
             chart: {
                 height: 350,
@@ -371,14 +373,11 @@
                 colors: ['transparent']
             },
             series: [{
-                name: 'In Progress',
-                data: [40, 28, 47, 22, 34, 25]
-            }, {
-                name: 'Complete',
-                data: [30, 20, 37, 10, 28, 11]
+                name: 'All Leads',
+                data: aData.data
             }],
             xaxis: {
-                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                categories: aData.label,
                 labels: {
                     style: {
                         colors: ['#353535'],

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Notification;
 use App\Models\User;
 use App\Models\Valuation;
 use Illuminate\Http\Request;
@@ -19,10 +20,19 @@ class HomeController extends Controller
         $data['completed_leads']= Valuation::where('status','delivered')->count();
         $data['employees'] = User::where('is_admin', 0)->get();
 
-        // $data['completedData']= Valuation::select(DB::raw("(COUNT(id)) as count"),DB::raw("MONTHNAME(created_at) as monthname"))
-        // ->whereYear('created_at', date('Y'))
-        // ->groupBy('monthname')
-        // ->get();
+        $data['completedData']= Valuation::select(DB::raw("(COUNT(id)) as count"),DB::raw("MONTHNAME(created_at) as monthname"))
+        ->whereYear('created_at', date('Y'))
+        ->groupBy('monthname')
+        // ->orderBy('monthname','asc')
+        ->get()->toArray();
+
+        $allLeadsData = [];
+        foreach($data['completedData'] as $row) {
+           $allLeadsData['label'][] = $row['monthname'];
+           $allLeadsData['data'][] = (int) $row['count'];
+         }
+
+         $data['allLeads'] = json_encode($allLeadsData);
 
         return view('admin.home', $data);
     }
@@ -61,14 +71,36 @@ class HomeController extends Controller
         $emp_id = $req->emp_id;
         if (is_array($req->all_leads)) {
             $leads = $req->all_leads;
+
+             $leadData = Valuation::whereIn('id', $leads)->get();
+             foreach($leadData as $row){
+                $data = [
+                    'user_id'=>$emp_id,
+                    'sender_id'=>auth()->user()->id,
+                    'sender_name'=>ucfirst(auth()->user()->name),
+                    'subject'=>$row->registration.' - Assign you.',
+                    'msg'=>'Please check all details & process this lead.',
+                    'status'=>0,
+                ];
+                Notification::create($data);
+             }
             Valuation::whereIn('id', $leads)->update([
                 'assign_to' => $emp_id
             ]);
         } else {
             $lead = $req->lead_id;
-            Valuation::where('id', $lead)->update([
-                'assign_to' => $emp_id
-            ]);
+            $leadData = Valuation::find($lead)->first();
+            $data = [
+                'user_id'=>$emp_id,
+                'sender_id'=>auth()->user()->id,
+                'sender_name'=>ucfirst(auth()->user()->name),
+                'subject'=>$leadData->registration.' - Assign you.',
+                'msg'=>'Please check all details & process this lead.',
+                'status'=>0,
+            ];
+            Notification::create($data);
+            $leadData->assign_to = $emp_id;
+            $leadData->update();
         }
 
         return response()->json(["msg" => "success"]);
