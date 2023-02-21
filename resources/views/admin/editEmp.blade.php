@@ -102,7 +102,7 @@
                             </option>
                             <option value="Female" {{$employee->gender =='Female'?'selected':'' }}>Female
                             </option>
-                            <option value="Others" {{$employee->gender =='Others'?'selected':'' }}>Others
+                            <option value="Others" {{$employee->gender =='Others'?'selected':'' }}>Other
                             </option>
                         </select>
                         @error('gender')

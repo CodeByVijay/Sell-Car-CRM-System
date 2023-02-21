@@ -25,6 +25,8 @@
                     <p class="mb-30">Edit Mail Configuration</p>
                 </div>
             </div>
+
+            @include('notification')
             <form action="{{ route('admin.addEditMailSetting') }}" method="POST">
                 @csrf
                 <input type="hidden" name="mail_id" value="{{$mailSetting->id}}">

@@ -18,7 +18,7 @@ class HomeController extends Controller
         $data['pending_leads'] = Valuation::where('status','pending')->count();
         $data['progress_leads'] = Valuation::where('status','in-progress')->count();
         $data['completed_leads']= Valuation::where('status','delivered')->count();
-        $data['employees'] = User::where('is_admin', 0)->get();
+        $data['employees'] = User::where(['is_admin'=> 0,'status'=>1])->get();
 
         $data['completedData']= Valuation::select(DB::raw("(COUNT(id)) as count"),DB::raw("MONTHNAME(created_at) as monthname"))
         ->whereYear('created_at', date('Y'))
@@ -89,7 +89,7 @@ class HomeController extends Controller
             ]);
         } else {
             $lead = $req->lead_id;
-            $leadData = Valuation::find($lead)->first();
+            $leadData = Valuation::find($lead);
             $data = [
                 'user_id'=>$emp_id,
                 'sender_id'=>auth()->user()->id,

@@ -25,6 +25,7 @@
                     <p class="mb-30">Add Mail Configuration</p>
                 </div>
             </div>
+            @include('notification')
             <form action="{{ route('admin.addEditMailSetting') }}" method="POST">
                 @csrf
                 <div class="form-group row">

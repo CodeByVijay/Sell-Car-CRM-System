@@ -106,7 +106,7 @@ use App\Models\Notification;
             <div class="dropdown">
                 <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown">
                     <span class="user-icon">
-                        <img src="{{ asset('admin/vendors/images/photo1.jpg') }}" alt="">
+                        <img src="{{ asset('admin/src/images') }}/{{auth()->user()->image!=null?auth()->user()->image:'avatar.png'}}" alt="">
                     </span>
                     <span class="user-name">{{ ucfirst(auth()->user()->name) }}</span>
                 </a>
@@ -115,7 +115,7 @@ use App\Models\Notification;
                         <a class="dropdown-item" href="{{ route('admin.profile') }}"><i class="dw dw-user1"></i>
                             Profile</a>
                     @else
-                        <a class="dropdown-item" href="#"><i class="dw dw-user1"></i> Profile</a>
+                        <a class="dropdown-item" href="{{ route('employee.profile') }}"><i class="dw dw-user1"></i> Profile</a>
                     @endif
                     <a class="dropdown-item" href="{{ route('logout') }}"><i class="dw dw-logout"></i> Log Out</a>
                 </div>

@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\MailSettingController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Employee\HomeController as EmployeeHomeController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ProfileController;
 use App\Models\User;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Support\Facades\Auth;
@@ -43,7 +44,7 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(fun
 
     // Valuation Routes
     Route::get('/valuation/all-leads', function () {
-        $data['employees'] = User::where('is_admin', 0)->get();
+        $data['employees'] =User::where(['is_admin'=> 0,'status'=>1])->get();
         return view('admin.leads', $data);
     })->name('leads');
     Route::post('/get-valuation-data', [HomeController::class, 'loadData'])->name('loadData');
@@ -98,7 +99,7 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(fun
     })->name('profile');
 });
 
-
+// Employee Dashboard Routes
 Route::name('employee.')->prefix('employee')->middleware(['auth', 'employee'])->group(function () {
     Route::get('/dashboard', [EmployeeHomeController::class, 'home'])->name('home');
 
@@ -110,5 +111,15 @@ Route::name('employee.')->prefix('employee')->middleware(['auth', 'employee'])->
         return view('admin.profile');
     })->name('profile');
 });
+// Employee Dashboard Routes End
+
+// Profile Section Routes
+Route::name('profile.')->prefix('profile')->middleware('auth')->group(function () {
+    Route::post('/change-profile-image', [ProfileController::class, 'changeProfileImage'])->name('changeProfileImage');
+    Route::post('/change-profile-info', [ProfileController::class, 'changeProfileInfo'])->name('changeProfileInfo');
+    Route::post('/change-password', [ProfileController::class, 'changePassword'])->name('changePassword');
+});
+// Profile Section Routes End
+
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');

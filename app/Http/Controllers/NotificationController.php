@@ -11,7 +11,7 @@ class NotificationController extends Controller
     public function index()
     {
         $data['notifications'] = Notification::where('user_id', auth()->user()->id)->orWhere('user_id', 0)->get();
-        $data['employees'] = User::where('is_admin', 0)->get();
+        $data['employees'] = User::get();
         return view('admin.notifications.notifications', $data);
     }
     public function sendNotification(Request $request)

@@ -71,7 +71,7 @@
                                             </div>
                                         </td>
                                         <td><span class="employee" data-id="{{ $row->id }}"><img
-                                                    src="{{ $row->image != null ? $row->image : asset('admin/src/images/avatar.png') }}"
+                                                    src="{{ asset('admin/src/images') }}/{{ $row->image != null ? $row->image : 'avatar.png' }}"
                                                     alt="" class="img-fluid rounded" width="48"
                                                     height="48"></span></td>
                                         <td><span class="employee" data-id="{{ $row->id }}">{{ $row->name }}</span>
@@ -280,12 +280,17 @@
                 $("#con_Password, #password").on('keyup', function() {
                     var password = $("#password").val();
                     var confirmPassword = $("#con_Password").val();
-                    if (password != confirmPassword) {
-                        msg.html("Password does not match !").css("color", "red");
+                    if (password.length === 0 && password.length === 0) {
+                        msg.html('')
                         changePWbtn.attr('disabled', true)
                     } else {
-                        msg.html("Password match !").css("color", "green");
-                        changePWbtn.attr('disabled', false)
+                        if (password != confirmPassword) {
+                            msg.html("Password does not match !").css("color", "red");
+                            changePWbtn.attr('disabled', true)
+                        } else {
+                            msg.html("Password match !").css("color", "green");
+                            changePWbtn.attr('disabled', false)
+                        }
                     }
                 });
                 // Check Password & Confirm Password same

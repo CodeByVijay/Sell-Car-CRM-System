@@ -205,6 +205,7 @@ $(document).on('click', '#assignLead', function () {
             data: { "emp_id": emp_id, "lead_id": lead_id, "all_leads": allLeads },
             success: function (response) {
                 if (response.msg === 'success') {
+                    console.log(response)
                     $('#empDataModel').modal('hide');
                     Swal.fire({
                         position: 'top-end',

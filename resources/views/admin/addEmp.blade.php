@@ -31,7 +31,7 @@
                     <label class="col-sm-12 col-md-2 col-form-label">Select Title <span class="text-danger">*</span></label>
                     <div class="col-sm-12 col-md-10">
                         <select class="custom-select col-12" name="title" required>
-                            <option selected="">Choose...</option>
+                            <option selected value="" disabled>Choose...</option>
                             <option value="Mr" @if (old('title') == 'Mr') {{ 'selected' }} @endif>Mr.</option>
                             <option value="Mrs" @if (old('title') == 'Mrs') {{ 'selected' }} @endif>Mrs.
                             </option>
@@ -108,7 +108,7 @@
                             class="text-danger">*</span></label>
                     <div class="col-sm-12 col-md-10">
                         <select class="custom-select col-12" name="gender" required>
-                            <option selected="">Choose...</option>
+                            <option selected value="" disabled>Choose...</option>
                             <option value="Male" @if (old('gender') == 'Male') {{ 'selected' }} @endif>Male
                             </option>
                             <option value="Female" @if (old('gender') == 'Female') {{ 'selected' }} @endif>Female

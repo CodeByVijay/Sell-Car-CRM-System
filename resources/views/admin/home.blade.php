@@ -5,6 +5,16 @@
         <link rel="stylesheet" href="{{ asset('admin/custom/css/lead.css') }}">
     @endpush
 
+    <?php
+    use App\Models\MailSetting;
+    $smtp = MailSetting::where('status', 1)->count();
+    ?>
+    @if ($smtp == 0)
+        <div class="alert alert-success alert-block">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>Please Add Mail Configuration First & Use One Configuration.   <a href="{{route('admin.mailSetting')}}" class="btn btn-success btn-sm">Click Here</a></strong>
+        </div>
+    @endif
     <div class="row">
         <div class="col-xl-3 mb-30">
             <div class="card-box height-100-p widget-style1">
@@ -74,7 +84,7 @@
         <div class="row">
             <div class="col-xl-8 mb-30">
                 <div class="card-box height-100-p pd-20">
-                    <h2 class="h4 mb-20">All Leads-<?php echo date('Y')?></h2>
+                    <h2 class="h4 mb-20">All Leads-<?php echo date('Y'); ?></h2>
                     <div id="chart5"></div>
                 </div>
             </div>
@@ -339,7 +349,7 @@
 @push('script')
     <script src="{{ asset('admin/custom/js/leads.js') }}"></script>
     <script>
-    var aData = JSON.parse(`<?php echo $allLeads; ?>`);
+        var aData = JSON.parse(`<?php echo $allLeads; ?>`);
 
 
         var options5 = {
