@@ -15,24 +15,24 @@ class HomeController extends Controller
     public function home()
     {
         $data['total_leads'] = Valuation::count();
-        $data['pending_leads'] = Valuation::where('status','pending')->count();
-        $data['progress_leads'] = Valuation::where('status','in-progress')->count();
-        $data['completed_leads']= Valuation::where('status','delivered')->count();
-        $data['employees'] = User::where(['is_admin'=> 0,'status'=>1])->get();
+        $data['pending_leads'] = Valuation::where('status', 'pending')->count();
+        $data['progress_leads'] = Valuation::where('status', 'in-progress')->count();
+        $data['completed_leads'] = Valuation::where('status', 'delivered')->count();
+        $data['employees'] = User::where(['is_admin' => 0, 'status' => 1])->get();
 
-        $data['completedData']= Valuation::select(DB::raw("(COUNT(id)) as count"),DB::raw("MONTHNAME(created_at) as monthname"))
-        ->whereYear('created_at', date('Y'))
-        ->groupBy('monthname')
-        // ->orderBy('monthname','asc')
-        ->get()->toArray();
+        $data['completedData'] = Valuation::select(DB::raw("(COUNT(id)) as count"), DB::raw("MONTHNAME(created_at) as monthname"))
+            ->whereYear('created_at', date('Y'))
+            ->groupBy('monthname')
+            // ->orderBy('monthname','asc')
+            ->get()->toArray();
 
         $allLeadsData = [];
-        foreach($data['completedData'] as $row) {
-           $allLeadsData['label'][] = $row['monthname'];
-           $allLeadsData['data'][] = (int) $row['count'];
-         }
+        foreach ($data['completedData'] as $row) {
+            $allLeadsData['label'][] = $row['monthname'];
+            $allLeadsData['data'][] = (int) $row['count'];
+        }
 
-         $data['allLeads'] = json_encode($allLeadsData);
+        $data['allLeads'] = json_encode($allLeadsData);
 
         return view('admin.home', $data);
     }
@@ -44,7 +44,7 @@ class HomeController extends Controller
             if ($valuation_count > 0) {
                 return response()->json(["msg" => "success", "data" => $valuations, "count" => $valuation_count, "option" => $request->option]);
             } else {
-                return response()->json(["msg" => "faild", "data" => null, "count" => "0"]);
+                return response()->json(["msg" => "faild", "data" => null, "count" => "0", 'test' => '1']);
             }
         } else {
             $valuations = Valuation::leftjoin('users', 'users.id', '=', 'valuations.assign_to')->where('valuations.status', "$request->option")->select('valuations.*', 'users.title as emp_title', 'users.name as emp_name')->orderBy('valuations.id', 'desc')->get();
@@ -52,7 +52,7 @@ class HomeController extends Controller
             if ($valuation_count > 0) {
                 return response()->json(["msg" => "success", "data" => $valuations, "count" => $valuation_count, "option" => $request->option]);
             } else {
-                return response()->json(["msg" => "faild", "data" => null, "count" => "0"]);
+                return response()->json(["msg" => "faild", "data" => null, "count" => "0", 'test' => '2']);
             }
         }
     }
@@ -72,18 +72,18 @@ class HomeController extends Controller
         if (is_array($req->all_leads)) {
             $leads = $req->all_leads;
 
-             $leadData = Valuation::whereIn('id', $leads)->get();
-             foreach($leadData as $row){
+            $leadData = Valuation::whereIn('id', $leads)->get();
+            foreach ($leadData as $row) {
                 $data = [
-                    'user_id'=>$emp_id,
-                    'sender_id'=>auth()->user()->id,
-                    'sender_name'=>ucfirst(auth()->user()->name),
-                    'subject'=>$row->registration.' - Assign you.',
-                    'msg'=>'Please check all details & process this lead.',
-                    'status'=>0,
+                    'user_id' => $emp_id,
+                    'sender_id' => auth()->user()->id,
+                    'sender_name' => ucfirst(auth()->user()->name),
+                    'subject' => $row->registration . ' - Assign you.',
+                    'msg' => 'Please check all details & process this lead.',
+                    'status' => 0,
                 ];
                 Notification::create($data);
-             }
+            }
             Valuation::whereIn('id', $leads)->update([
                 'assign_to' => $emp_id
             ]);
@@ -91,12 +91,12 @@ class HomeController extends Controller
             $lead = $req->lead_id;
             $leadData = Valuation::find($lead);
             $data = [
-                'user_id'=>$emp_id,
-                'sender_id'=>auth()->user()->id,
-                'sender_name'=>ucfirst(auth()->user()->name),
-                'subject'=>$leadData->registration.' - Assign you.',
-                'msg'=>'Please check all details & process this lead.',
-                'status'=>0,
+                'user_id' => $emp_id,
+                'sender_id' => auth()->user()->id,
+                'sender_name' => ucfirst(auth()->user()->name),
+                'subject' => $leadData->registration . ' - Assign you.',
+                'msg' => 'Please check all details & process this lead.',
+                'status' => 0,
             ];
             Notification::create($data);
             $leadData->assign_to = $emp_id;
@@ -127,29 +127,30 @@ class HomeController extends Controller
         return view('admin.archive-lead', $data);
     }
 
-    public function restoreArchiveLeads(Request $req){
-        if (is_array($req->leads)) {
-            $leads = $req->leads;
-            Valuation::whereIn('id', $leads)->restore();
+    public function restoreArchiveLeads(Request $req)
+    {
+        // echo "<pre>";
+        // print_r($req->all());
+        // echo "<pre>";
+        // die();
+        if ($req->leads == 'all') {
+            Valuation::onlyTrashed()->restore();
         } else {
             $lead = $req->lead_id;
             Valuation::onlyTrashed()->find($lead)->restore();
         }
-
-        return redirect()->back()->with('success',"Lead Restored Successfully.");
+        return redirect()->back()->with('success', "Lead Restored Successfully.");
     }
 
-    public function deleteArchiveLeads(Request $req){
-        if (is_array($req->leads)) {
-            $leads = $req->leads;
-            Valuation::whereIn('id', $leads)->delete();
+    public function deleteArchiveLeads(Request $req)
+    {
+        if ($req->leads == 'all') {
+            Valuation::onlyTrashed()->forcedelete();
         } else {
             $lead = $req->lead_id;
             Valuation::onlyTrashed()->find($lead)->forcedelete();
         }
 
-        return redirect()->back()->with('success',"Lead Deleted Successfully.");
+        return redirect()->back()->with('success', "Lead Deleted Successfully.");
     }
-
-
 }

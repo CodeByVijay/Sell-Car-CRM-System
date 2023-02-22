@@ -26,7 +26,7 @@
                 </div>
             </div>
             @include('notification')
-            <form action="{{ route('admin.addEditMailSetting') }}" method="POST">
+            <form action="{{ route('admin.addEditMailSetting') }}" id="smtpAddForm" method="POST">
                 @csrf
                 <div class="form-group row">
                     <label class="col-sm-12 col-md-2 col-form-label">Mailer <span class="text-danger">*</span></label>
@@ -129,7 +129,7 @@
                 <div class="form-group row">
                     <label class="col-sm-10 col-md-10 col-form-label"> </label>
                     <div class="col-sm-2 col-md-2">
-                        <button class="btn btn-primary w-100" type="submit">Submit</button>
+                        <button class="btn btn-primary w-100" id="disableAddBtn" type="button">Submit</button>
                     </div>
                 </div>
 
@@ -140,3 +140,14 @@
 
         </div>
     @endsection
+    @push('script')
+    <script>
+        $(document).ready(function() {
+            $('#disableAddBtn').on('click', function() {
+                $(this).attr('disabled', true)
+                $(this).html('Processing...')
+                $('#smtpAddForm').submit();
+            })
+        });
+    </script>
+@endpush

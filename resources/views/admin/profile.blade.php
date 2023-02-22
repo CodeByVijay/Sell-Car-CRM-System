@@ -69,7 +69,7 @@
                             </div>
                             <h5 class="text-center h5 mb-0">{{ auth()->user()->title }} {{ auth()->user()->name }}</h5>
                             <p class="text-center text-muted font-14">
-                                {{ auth()->user()->is_admin == 1 ? 'Admin' : 'Managment Team' }}</p>
+                                {{ auth()->user()->is_admin == 1 ? 'Admin' : 'Management Team' }}</p>
                             <div class="profile-info">
                                 <h5 class="mb-20 h5 text-blue">Contact Information</h5>
                                 <ul>

@@ -27,14 +27,14 @@
             </div>
 
             @include('notification')
-            <form action="{{ route('admin.addEditMailSetting') }}" method="POST">
+            <form action="{{ route('admin.addEditMailSetting') }}" id="smtpEditForm" method="POST">
                 @csrf
-                <input type="hidden" name="mail_id" value="{{$mailSetting->id}}">
+                <input type="hidden" name="mail_id" value="{{ $mailSetting->id }}">
                 <div class="form-group row">
                     <label class="col-sm-12 col-md-2 col-form-label">Mailer <span class="text-danger">*</span></label>
                     <div class="col-sm-12 col-md-10">
                         <select class="custom-select col-12" name="mailer" required>
-                            <option value="smtp" {{$mailSetting->mailer =='smtp'?'selected':'' }}>SMTP</option>
+                            <option value="smtp" {{ $mailSetting->mailer == 'smtp' ? 'selected' : '' }}>SMTP</option>
                         </select>
                         @error('mailer')
                             <span class="text-danger">{{ $message }}</span>
@@ -43,10 +43,11 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Host Name/URL <span class="text-danger">*</span></label>
+                    <label class="col-sm-12 col-md-2 col-form-label">Host Name/URL <span
+                            class="text-danger">*</span></label>
                     <div class="col-sm-12 col-md-10">
                         <input class="form-control" name="host" type="text" placeholder="smtp.gmail.com"
-                            value="{{$mailSetting->host}}" autocomplete="off" required>
+                            value="{{ $mailSetting->host }}" autocomplete="off" required>
                         @error('host')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -55,14 +56,13 @@
 
 
                 <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Encryption <span
-                            class="text-danger">*</span></label>
+                    <label class="col-sm-12 col-md-2 col-form-label">Encryption <span class="text-danger">*</span></label>
                     <div class="col-sm-12 col-md-10">
                         <select class="custom-select col-12" name="encryption" required>
                             <option selected value="" disabled>Choose...</option>
-                            <option value="ssl" {{$mailSetting->encryption =='ssl'?'selected':'' }}>SSL
+                            <option value="ssl" {{ $mailSetting->encryption == 'ssl' ? 'selected' : '' }}>SSL
                             </option>
-                            <option value="tls" {{$mailSetting->encryption =='tls'?'selected':'' }}>TLS
+                            <option value="tls" {{ $mailSetting->encryption == 'tls' ? 'selected' : '' }}>TLS
                             </option>
                         </select>
                         @error('encryption')
@@ -72,10 +72,10 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Port<span
-                            class="text-danger">*</span></label>
+                    <label class="col-sm-12 col-md-2 col-form-label">Port<span class="text-danger">*</span></label>
                     <div class="col-sm-12 col-md-10">
-                        <input class="form-control" name="port" placeholder="465, 587 etc" type="number" autocomplete="off" value="{{$mailSetting->port}}" required>
+                        <input class="form-control" name="port" placeholder="465, 587 etc" type="number"
+                            autocomplete="off" value="{{ $mailSetting->port }}" required>
                         @error('port')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -86,7 +86,7 @@
                 <div class="form-group row">
                     <label class="col-sm-12 col-md-2 col-form-label">Username <span class="text-danger">*</span></label>
                     <div class="col-sm-12 col-md-10">
-                        <input class="form-control" name="username" value="{{$mailSetting->username}}"
+                        <input class="form-control" name="username" value="{{ $mailSetting->username }}"
                             placeholder="email@example.com" type="text" autocomplete="off" required>
                         @error('username')
                             <span class="text-danger">{{ $message }}</span>
@@ -96,10 +96,11 @@
 
 
                 <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Password/Google App Password <span class="text-danger">*</span></label>
+                    <label class="col-sm-12 col-md-2 col-form-label">Password/Google App Password <span
+                            class="text-danger">*</span></label>
                     <div class="col-sm-12 col-md-10">
-                        <input class="form-control" name="password" value="{{$mailSetting->password}}" placeholder="password"
-                            type="text" autocomplete="off" required>
+                        <input class="form-control" name="password" value="{{ $mailSetting->password }}"
+                            placeholder="password" type="text" autocomplete="off" required>
                         @error('password')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -109,8 +110,8 @@
                 <div class="form-group row">
                     <label class="col-sm-12 col-md-2 col-form-label">From Address</label>
                     <div class="col-sm-12 col-md-10">
-                        <input class="form-control" name="from_address" value="{{$mailSetting->from_address}}" type="email"
-                            placeholder="email@example.com" autocomplete="off">
+                        <input class="form-control" name="from_address" value="{{ $mailSetting->from_address }}"
+                            type="email" placeholder="email@example.com" autocomplete="off">
                         @error('from_address')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -120,7 +121,7 @@
                 <div class="form-group row">
                     <label class="col-sm-12 col-md-2 col-form-label">From Name</label>
                     <div class="col-sm-12 col-md-10">
-                        <input class="form-control" name="from_name" value="{{$mailSetting->from_name}}" type="text"
+                        <input class="form-control" name="from_name" value="{{ $mailSetting->from_name }}" type="text"
                             placeholder="eg - Marketing Mail" autocomplete="off">
                         @error('from_name')
                             <span class="text-danger">{{ $message }}</span>
@@ -131,7 +132,7 @@
                 <div class="form-group row">
                     <label class="col-sm-10 col-md-10 col-form-label"> </label>
                     <div class="col-sm-2 col-md-2">
-                        <button class="btn btn-primary w-100" type="submit">Submit</button>
+                        <button class="btn btn-primary w-100" id="disableEditBtn" type="button">Submit</button>
                     </div>
                 </div>
 
@@ -142,3 +143,14 @@
 
         </div>
     @endsection
+    @push('script')
+        <script>
+            $(document).ready(function() {
+                $('#disableEditBtn').on('click', function() {
+                    $(this).attr('disabled', true)
+                    $(this).html('Processing...')
+                    $('#smtpEditForm').submit();
+                })
+            });
+        </script>
+    @endpush

@@ -76,7 +76,12 @@ class MailSettingController extends Controller
             $mail->from_address = $req->from_address;
             $mail->from_name = $req->from_name;
             $mail->status = 1;
-            $mail->save();
+            if ($req->mail_id) {
+                $mail->update();
+            } else {
+                $mail->save();
+            }
+
 
             return redirect()->route('admin.mailSetting')->with('success', " Mail configuration successfully " . $msg);
         } catch (\Exception $e) {

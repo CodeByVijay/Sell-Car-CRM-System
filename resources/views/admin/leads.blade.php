@@ -222,7 +222,7 @@
                     </div>
 
                     <div class="pt-20 pb-20 table-responsive">
-                        <table class="checkbox-datatable table nowrap filterDataTable" id="valuationTable">
+                        <table class="checkbox-datatable table nowrap filterDataTable table-hover" id="valuationTable">
                             <thead>
                                 <tr>
                                     <th>

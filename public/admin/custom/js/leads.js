@@ -36,6 +36,7 @@ loadData(filterOptionData, table);
 
 function loadData(filterOption, table) {
     let dataTable = $(`${table}`)
+    console.log(filterOption,table)
     $.ajax({
         type: "post",
         url: "/admin/get-valuation-data",
@@ -43,7 +44,7 @@ function loadData(filterOption, table) {
             "option": filterOption
         },
         success: function (response) {
-            // console.log(response)
+            console.log(response)
             $('#table_body').empty();
 
             if (response.msg === 'success' && response.data !== null) {

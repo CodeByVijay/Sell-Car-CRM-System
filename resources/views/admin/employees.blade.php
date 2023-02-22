@@ -43,14 +43,14 @@
                     <a href="{{ route('admin.addEmployee') }}" class="float-right btn btn-success btn-sm my-3 mx-2"><i
                             class="dw dw-add-user"></i> Add New Employee</a>
                     <div class="pt-20 pb-20 table-responsive">
-                        <table class="checkbox-datatable table nowrap" id="employeesTable">
+                        <table class="checkbox-datatable table nowrap table-hover" id="employeesTable">
                             <thead>
                                 <tr>
-                                    <th>
-                                        <div class="dt-checkbox">
+                                    <th>#
+                                        {{-- <div class="dt-checkbox">
                                             <input type="checkbox" name="select_all" value="1" id="master">
                                             <span class="dt-checkbox-label"></span>
-                                        </div>
+                                        </div> --}}
                                     </th>
                                     <th>Image</th>
                                     <th>Name</th>
@@ -62,13 +62,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($employees as $row)
+                                @foreach ($employees as $key=>$row)
                                     <tr>
                                         <td>
-                                            <div class="dt-checkbox">
+                                            {{$key+1}}
+                                            {{-- <div class="dt-checkbox">
                                                 <input type="checkbox" name="select_all" value="1" class="sub_chk">
                                                 <span class="dt-checkbox-label"></span>
-                                            </div>
+                                            </div> --}}
                                         </td>
                                         <td><span class="employee" data-id="{{ $row->id }}"><img
                                                     src="{{ asset('admin/src/images') }}/{{ $row->image != null ? $row->image : 'avatar.png' }}"
@@ -137,12 +138,12 @@
                                 <input type="hidden" name="emp_id" id="emp_id">
                                 <div class="form-group">
                                     <label for="password" class="col-form-label">Password:</label>
-                                    <input type="password" class="form-control" id="password">
+                                    <input type="password" class="form-control" id="password" min="8">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="con_Password" class="col-form-label">Confirm Password:</label>
-                                    <input type="password" class="form-control" id="con_Password">
+                                    <input type="password" class="form-control" id="con_Password" min="8">
                                     <span id="msgSpan"></span>
                                 </div>
                                 <div class="form-inline">
@@ -280,10 +281,13 @@
                 $("#con_Password, #password").on('keyup', function() {
                     var password = $("#password").val();
                     var confirmPassword = $("#con_Password").val();
-                    if (password.length === 0 && password.length === 0) {
+                    if (password.length === 0 && confirmPassword.length === 0) {
                         msg.html('')
                         changePWbtn.attr('disabled', true)
-                    } else {
+                    } else if (password.length < 8 && confirmPassword.length < 8) {
+                        msg.html('Please enter minimum 8 digit password.')
+                        changePWbtn.attr('disabled', true)
+                    }else {
                         if (password != confirmPassword) {
                             msg.html("Password does not match !").css("color", "red");
                             changePWbtn.attr('disabled', true)

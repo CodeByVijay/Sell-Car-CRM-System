@@ -23,22 +23,33 @@
             @include('notification')
 
             <div class="card-box mb-30">
-                <div class="text-right">
-                    <a href="{{ route('admin.addEmployee') }}" class="btn btn-success btn-sm my-3 mx-2"><i
-                            class="dw dw-refresh1"></i> Restore Selected Leads</a>
-                    <a href="{{ route('admin.addEmployee') }}" class="btn btn-danger btn-sm my-3 mx-2"><i
-                            class="dw dw-delete-3"></i> Delete Selected Leads</a>
+
+                <div class="float-right">
+                    <form action="{{ route('admin.deleteArchiveLeads') }}" id="deleteLeadsAllForm" method="post">
+                        @csrf
+                        <input type="hidden" name="leads" id="deleteLeads" value="all">
+                        <a href="javascript:void(0)" id="deleteLeadsAllBtn" class="btn btn-danger btn-sm my-3 mx-2"><i
+                                class="dw dw-delete-3"></i> Delete Selected Leads</a>
+                    </form>
                 </div>
+
+                <div class="float-right">
+                    <form action="{{ route('admin.restoreArchiveLeads') }}" id="restoreLeadsAllForm" method="post">
+                        @csrf
+                        <input type="hidden" name="leads" id="restoreLeads" value="all">
+                        <a href="javascript:void(0)" id="restoreLeadsAllBtn" class="btn btn-success btn-sm my-3 mx-2"><i
+                                class="dw dw-refresh1"></i> Restore Selected
+                            Leads</a>
+                    </form>
+                </div>
+
 
                 <div class="pt-20 pb-20 table-responsive">
                     <table class="checkbox-datatable table nowrap" id="archiveTable">
                         <thead>
                             <tr>
                                 <th>
-                                    <div class="dt-checkbox">
-                                        <input type="checkbox" name="select_all" value="1" id="master">
-                                        <span class="dt-checkbox-label"></span>
-                                    </div>
+                                   #
                                 </th>
                                 <th>Image</th>
                                 <th>VRM</th>
@@ -50,13 +61,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($archivedLeads as $row)
+                            @foreach ($archivedLeads as $key=>$row)
                                 <tr>
                                     <td>
-                                        <div class="dt-checkbox">
-                                            <input type="checkbox" name="select_all" value="1" class="sub_chk">
-                                            <span class="dt-checkbox-label"></span>
-                                        </div>
+                                       {{$key+1}}
                                     </td>
                                     <td><span class="lead" data-id="{{ $row->id }}"><img
                                                 src="{{ $row->image != null ? $row->image : asset('admin/src/images/avatar.png') }}"
@@ -142,8 +150,8 @@
 
 
 
-          // Delete Single Lead
-          $(document).on('click', '.leadDelete', function(e) {
+        // Delete Single Lead
+        $(document).on('click', '.leadDelete', function(e) {
             e.preventDefault();
             leadId = $(this).data('id')
             Swal.fire({
@@ -161,6 +169,44 @@
             })
         })
         // Delete Single Lead
-    </script>
 
+        // Restore All leads
+        $(document).on('click', '#restoreLeadsAllBtn', function() {
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You restore all leads!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, restore it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#restoreLeadsAllForm').submit();
+                }
+            });
+        })
+        // Restore All leads End
+
+
+        // Delete All leads
+        $(document).on('click', '#deleteLeadsAllBtn', function() {
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert leads!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#deleteLeadsAllForm').submit();
+                }
+            });
+        })
+        // Delete All leads End
+    </script>
 @endpush
