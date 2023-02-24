@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\MailSetting;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
@@ -73,7 +74,7 @@ class EmployeeController extends Controller
             }
         }
 
-        return redirect()->route('admin.listAllEmployee')->with('success', ucfirst($req->name) . ' - Profile Has Been  ' . $msg . ' Successfully.');
+        return redirect()->route('admin.listAllEmployee')->with('success', ucfirst($req->name) . ' - Employee Has Been  ' . $msg . ' Successfully.');
     }
 
     public function employeeStatus(Request $req)
@@ -101,6 +102,11 @@ class EmployeeController extends Controller
     {
         User::find($id)->delete();
         return redirect()->route('admin.listAllEmployee')->with('success', 'Employee Has Beed Deleted.');
+    }
+
+    public function loginAsEmployee($id){
+        Auth::loginUsingId($id);
+        return redirect()->intended(route('employee.home'));
     }
 
 }

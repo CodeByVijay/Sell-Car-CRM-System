@@ -64,6 +64,7 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(fun
     Route::get('/employee/employee-edit/{id}', [EmployeeController::class, 'empEdit'])->name('empEdit');
     Route::get('/employee/employee-delete/{id}', [EmployeeController::class, 'empDelete'])->name('empDelete');
     Route::post('/employee/password-change', [EmployeeController::class, 'empPasswordChange'])->name('empPasswordChange');
+    Route::get('/employee/login/{id}',[EmployeeController::class,'loginAsEmployee'])->name('empLogin');
     // Employees Route end
 
     // Mail Setting Routes

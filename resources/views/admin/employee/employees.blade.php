@@ -94,8 +94,8 @@
                                                     <i class="dw dw-more"></i>
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                                                    <a class="dropdown-item" href="#"><i class="dw dw-eye"></i>
-                                                        View</a>
+                                                    <a class="dropdown-item" target="_blank" href="{{route('admin.empLogin',$row->id)}}"><i class="dw dw-eye"></i>
+                                                        Login Employee Portal</a>
                                                     <a class="dropdown-item"
                                                         href="{{ route('admin.empEdit', $row->id) }}"><i
                                                             class="dw dw-edit2"></i>

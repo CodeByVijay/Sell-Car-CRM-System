@@ -113,7 +113,7 @@
                                                 <tr class="">
                                                     <td class="">
                                                         <img alt="robot picture" class="" height="155"
-                                                            src="https://www.strunkmedia.com/wp-content/uploads/2018/05/bigstock-Print-163213010.png"
+                                                            src="{{ asset('admin/vendors/images/logo.svg') }}"
                                                             width="155">
                                                     </td>
                                                 </tr>
@@ -161,7 +161,7 @@
                                                     <td class="">
                                                         <div class="">
                                                             <a style="background-color:#674299;border-radius:4px;color:#fff;display:inline-block;font-family:Helvetica, Arial, sans-serif;font-size:18px;font-weight:normal;line-height:50px;text-align:center;text-decoration:none;width:350px;-webkit-text-size-adjust:none;"
-                                                                href="http://127.0.0.1:8000/">Visit Account and Start
+                                                                href="{{url('/')}}">Visit Account and Start
                                                                 Managing</a>
                                                         </div>
                                                         <br>
