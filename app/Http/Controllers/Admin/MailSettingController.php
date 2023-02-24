@@ -64,9 +64,6 @@ class MailSettingController extends Controller
                 $message->from($maildata['from'], $maildata['name']);
             });
 
-            MailSetting::where('status', 1)->update([
-                'status' => 0
-            ]);
             $mail->mailer = $req->mailer;
             $mail->host = $req->host;
             $mail->encryption = $req->encryption;
@@ -75,7 +72,7 @@ class MailSettingController extends Controller
             $mail->password = $req->password;
             $mail->from_address = $req->from_address;
             $mail->from_name = $req->from_name;
-            $mail->status = 1;
+            // $mail->status = 1;
             if ($req->mail_id) {
                 $mail->update();
             } else {

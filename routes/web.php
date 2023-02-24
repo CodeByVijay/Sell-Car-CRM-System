@@ -28,16 +28,11 @@ Route::get('/', function () {
     return view('auth.login');
 })->name('login');
 
-Route::get('/forgot-password', function () {
-    return view('auth.forgot_password');
-})->name('forgot_password');
-
-Route::get('/reset-password', function () {
-    return view('auth.reset_password');
-})->name('reset_password');
-
+Route::get('/forgot-password', [AuthController::class,'forgot_password_view'])->name('forgot_password');
+Route::post('/forgot-password', [AuthController::class,'forgot_password_post'])->name('forgot_password_post');
+Route::get('/reset-password/{token}', [AuthController::class,'reset_password_view'])->name('reset_password');
+Route::post('/reset-password', [AuthController::class,'reset_password_post'])->name('reset_password_post');
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
-
 Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/dashboard', [HomeController::class, 'home'])->name('home');
 

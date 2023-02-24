@@ -19,6 +19,7 @@
 	<link rel="stylesheet" type="text/css" href="{{asset('admin/vendors/styles/core.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{asset('admin/vendors/styles/icon-font.min.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{asset('admin/vendors/styles/style.css')}}">
+    @stack('style')
 </head>
 <body>
     <div class="login-header box-shadow">
@@ -37,5 +38,9 @@
     <script src="{{asset('admin/vendors/scripts/script.min.js')}}"></script>
     <script src="{{asset('admin/vendors/scripts/process.js')}}"></script>
     <script src="{{asset('admin/vendors/scripts/layout-settings.js')}}"></script>
+        {{-- Jquery Advance Validation --}}
+        <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.js"></script>
+    @stack('script')
 </body>
 </html>

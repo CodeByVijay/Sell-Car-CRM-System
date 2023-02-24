@@ -129,19 +129,20 @@
                                 <input type="hidden" name="emp_id" id="emp_id">
                                 <div class="form-group">
                                     <label for="name" class="col-form-label">Name:</label>
-                                    <input type="text" class="form-control" name="name" placeholder="Name">
+                                    <input type="text" class="form-control" name="name" placeholder="Name" required>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="to" class="col-form-label">To Email:</label>
                                     <input type="email" class="form-control" name="to"
-                                        placeholder="email@example.com">
+                                        placeholder="email@example.com" required>
                                 </div>
 
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Send Test Mail</button>
+                                <button type="button" class="btn btn-primary" id="sendTestMailBtn">Send Test
+                                    Mail</button>
                             </div>
                         </form>
                     </div>
@@ -152,11 +153,15 @@
         @endsection
         @push('script')
             <script>
-                $('#mailSettingTable').DataTable({
-                    "columnDefs": [{
-                        "targets": [0,7],
-                        "orderable": false
-                    }]
+                $('#mailSettingTable').DataTable({'columnDefs': [{
+                    'targets': 0,
+                    'searchable': false,
+                    'orderable': false,
+                    'className': 'dt-body-center',
+                }],
+                    'order': [
+                    [0, 'desc']
+                ]
                 });
 
                 // Delete Configuration
@@ -200,4 +205,16 @@
                 })
                 // Use Mail Configuration end
             </script>
+
+            {{-- Test Mail Send Script --}}
+            <script>
+                $(document).ready(function() {
+                    $('#sendTestMailBtn').on('click', function() {
+                        $(this).attr('disabled', true)
+                        $(this).html('Sending...')
+                        $('#sendTestMailForm').submit();
+                    })
+                });
+            </script>
+            {{-- Test Mail Send Script End --}}
         @endpush

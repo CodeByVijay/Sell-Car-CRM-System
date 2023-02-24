@@ -28,7 +28,7 @@
                         {{-- Notification End --}}
 
 
-                        <form action="{{ route('auth.login') }}" method="POST">
+                        <form action="{{ route('auth.login') }}" method="POST" id="loginForm">
                             @csrf
                             <div class="select-role">
                                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -65,7 +65,7 @@
                             <div class="row pb-30">
                                 <div class="col-6">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                        <input type="checkbox" class="custom-control-input" name="remember_me" id="customCheck1">
                                         <label class="custom-control-label" for="customCheck1">Remember</label>
                                     </div>
                                 </div>
@@ -77,7 +77,8 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="input-group mb-0">
-                                        <input class="btn btn-primary btn-lg btn-block" type="submit" value="Sign In">
+                                        <input class="btn btn-primary btn-lg btn-block" type="submit"
+                                            value="Sign In">
                                     </div>
 
                                 </div>
