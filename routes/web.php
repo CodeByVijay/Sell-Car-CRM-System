@@ -8,8 +8,6 @@ use App\Http\Controllers\Employee\HomeController as EmployeeHomeController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 use App\Models\User;
-use Illuminate\Contracts\Session\Session;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,10 +26,10 @@ Route::get('/', function () {
     return view('auth.login');
 })->name('login');
 
-Route::get('/forgot-password', [AuthController::class,'forgot_password_view'])->name('forgot_password');
-Route::post('/forgot-password', [AuthController::class,'forgot_password_post'])->name('forgot_password_post');
-Route::get('/reset-password/{token}', [AuthController::class,'reset_password_view'])->name('reset_password');
-Route::post('/reset-password', [AuthController::class,'reset_password_post'])->name('reset_password_post');
+Route::get('/forgot-password', [AuthController::class, 'forgot_password_view'])->name('forgot_password');
+Route::post('/forgot-password', [AuthController::class, 'forgot_password_post'])->name('forgot_password_post');
+Route::get('/reset-password/{token}', [AuthController::class, 'reset_password_view'])->name('reset_password');
+Route::post('/reset-password', [AuthController::class, 'reset_password_post'])->name('reset_password_post');
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/dashboard', [HomeController::class, 'home'])->name('home');
@@ -39,8 +37,8 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(fun
 
     // Valuation Routes
     Route::get('/valuation/all-leads', function () {
-        $data['employees'] =User::where(['is_admin'=> 0,'status'=>1])->get();
-        return view('admin.leads', $data);
+        $data['employees'] = User::where(['is_admin' => 0, 'status' => 1])->get();
+        return view('admin.leads.leads', $data);
     })->name('leads');
     Route::post('/get-valuation-data', [HomeController::class, 'loadData'])->name('loadData');
     Route::post('/change-valuation-status', [HomeController::class, 'changeValStatus']);
@@ -58,7 +56,7 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(fun
 
     // Employees Route
     Route::get('/employee/add-new-employee', function () {
-        return view('admin.addEmp');
+        return view('admin.employee.addEmp');
     })->name('addEmployee');
     Route::get('/employee/employee-list', [EmployeeController::class, 'listAllEmployee'])->name('listAllEmployee');
     Route::post('/employee/add-employee', [EmployeeController::class, 'addEditEmployee'])->name('addEditEmployee');
@@ -71,7 +69,7 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(fun
     // Mail Setting Routes
     Route::get('settings/mail-setting', [MailSettingController::class, 'index'])->name('mailSetting');
     Route::get('settings/mail-setting/create', function () {
-        return view('admin.addMailSetting');
+        return view('admin.mailSetting.addMailSetting');
     })->name('mailSettingCreate');
     Route::post('settings/mail-setting/add', [MailSettingController::class, 'addEditMailSetting'])->name('addEditMailSetting');
     Route::get('settings/mail-setting/edit/{id}', [MailSettingController::class, 'editMailSettingForm'])->name('editMailSettingForm');
@@ -82,15 +80,15 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(fun
 
 
     // Notification Routes
-    Route::get('settings/notificatins',[NotificationController::class,'index'])->name('notifications');
-    Route::get('settings/notificatins/delete/{id}',[NotificationController::class,'deleteNotification'])->name('deleteNotification');
-    Route::post('settings/notificatins/send-notification',[NotificationController::class,'sendNotification'])->name('sendNotification');
+    Route::get('settings/notificatins', [NotificationController::class, 'index'])->name('notifications');
+    Route::get('settings/notificatins/delete/{id}', [NotificationController::class, 'deleteNotification'])->name('deleteNotification');
+    Route::post('settings/notificatins/send-notification', [NotificationController::class, 'sendNotification'])->name('sendNotification');
 
     // Notification Routes End
 
 
     Route::get('/profile', function () {
-        return view('admin.profile');
+        return view('admin.profile.profile');
     })->name('profile');
 });
 
@@ -103,7 +101,7 @@ Route::name('employee.')->prefix('employee')->middleware(['auth', 'employee'])->
     // Get Valuation Data End
 
     Route::get('/profile', function () {
-        return view('admin.profile');
+        return view('admin.profile.profile');
     })->name('profile');
 });
 // Employee Dashboard Routes End

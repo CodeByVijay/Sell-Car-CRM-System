@@ -56,7 +56,7 @@
                                 </div>
                             </div>
                             <div class="input-group custom">
-                                <input type="password" name="password" class="form-control form-control-lg"
+                                <input type="password" name="password" id="password" class="form-control form-control-lg"
                                     placeholder="**********" required>
                                 <div class="input-group-append custom">
                                     <span class="input-group-text"><i class="dw dw-padlock1"></i></span>
@@ -65,8 +65,8 @@
                             <div class="row pb-30">
                                 <div class="col-6">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" name="remember_me" id="customCheck1">
-                                        <label class="custom-control-label" for="customCheck1">Remember</label>
+                                        <input type="checkbox" class="custom-control-input" id="viewPass">
+                                        <label class="custom-control-label" for="viewPass">View Paasword</label>
                                     </div>
                                 </div>
                                 <div class="col-6">
@@ -77,8 +77,7 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="input-group mb-0">
-                                        <input class="btn btn-primary btn-lg btn-block" type="submit"
-                                            value="Sign In">
+                                        <input class="btn btn-primary btn-lg btn-block" type="submit" value="Sign In">
                                     </div>
 
                                 </div>
@@ -90,3 +89,17 @@
         </div>
     </div>
 @endsection
+@push('script')
+    <script>
+        // Show-Hide Password
+        $(document).on('click', '#viewPass', function() {
+            var x = document.getElementById("password");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        })
+        // Show-Hide Password End
+    </script>
+@endpush

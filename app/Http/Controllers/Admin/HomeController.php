@@ -124,7 +124,7 @@ class HomeController extends Controller
     public function getArchiveLeads()
     {
         $data['archivedLeads'] = Valuation::onlyTrashed()->get();
-        return view('admin.archive-lead', $data);
+        return view('admin.leads.archive-lead', $data);
     }
 
     public function restoreArchiveLeads(Request $req)

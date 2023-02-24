@@ -14,7 +14,7 @@ class MailSettingController extends Controller
     public function index()
     {
         $data['mailSettings'] = MailSetting::orderBy('id', 'asc')->get();
-        return view('admin.mail-setting', $data);
+        return view('admin.mailSetting.mail-setting', $data);
     }
 
     public function addEditMailSetting(Request $req)
@@ -89,7 +89,7 @@ class MailSettingController extends Controller
     public function editMailSettingForm($id)
     {
         $mailSetting = MailSetting::find($id);
-        return view('admin.editMailSetting', compact('mailSetting'));
+        return view('admin.mailSetting.editMailSetting', compact('mailSetting'));
     }
 
     public function useMailSetting($id)

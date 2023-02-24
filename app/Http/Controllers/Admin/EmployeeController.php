@@ -14,7 +14,7 @@ class EmployeeController extends Controller
     public function listAllEmployee()
     {
         $data['employees'] = User::where('is_admin', 0)->get();
-        return view('admin.employees', $data);
+        return view('admin.employee.employees', $data);
     }
 
     public function addEditEmployee(Request $req)
@@ -87,7 +87,7 @@ class EmployeeController extends Controller
     public function empEdit($id)
     {
         $employee = User::find($id);
-        return view('admin.editEmp', compact('employee'));
+        return view('admin.employee.editEmp', compact('employee'));
     }
 
     public function empPasswordChange(Request $req){
