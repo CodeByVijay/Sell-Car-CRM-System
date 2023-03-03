@@ -36,8 +36,6 @@ class EmployeeController extends Controller
             ]);
             $employee = new User();
             $msg = 'Added';
-
-
         }
 
         $employee->title = $req->title;

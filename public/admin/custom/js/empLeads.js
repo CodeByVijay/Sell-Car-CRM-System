@@ -15,7 +15,6 @@ $(document).ready(function () {
         }
     });
     // Checkbox Selection End
-
 });
 
 // Load Data Code
@@ -38,7 +37,7 @@ function loadData(filterOption, table) {
     let dataTable = $(`${table}`)
     $.ajax({
         type: "post",
-        url: "/admin/get-valuation-data",
+        url: "/employee/get-valuation-data",
         data: {
             "option": filterOption
         },
@@ -68,9 +67,7 @@ function loadData(filterOption, table) {
                                                 <option value="offer-made" ${value.status == 'offer-made' ? 'selected' : ''}>Offer made</option>
                                             </select>
                                         </td>
-                                        <td>
-                                            <a href="javascript:void(0)">${value.assign_to !== null ? '<div class="btn-group-sm assignTochange" data-id="' + value.assign_to + '" data-lead="' + value.id + '"><button type="button" class="btn btn-success">' + value.emp_title + " " + value.emp_name + '</button><button type="button" class="btn btn-info"><i class="fa fa-refresh" aria-hidden="true"></i></button></div>' : '<button type="button" class="btn btn-info btn-sm assignTochange" data-id="" data-lead="' + value.id + '">Assign To <i class="fa fa-refresh" aria-hidden="true"></i></button>'}</a>
-                                        </td>
+
                                         <td>
                                             <a href="https://dorksd10.sg-host.com/crm/details.php?vrm=${value.registration}" class="vrm_box"><span class="vrm">${value.registration}</span></a>
                                         </td>
@@ -90,11 +87,6 @@ function loadData(filterOption, table) {
                                                 View</a>
                                             <a class="dropdown-item" href="#"><i class="dw dw-edit2"></i>
                                                 Edit</a>
-
-
-                                                <a class="dropdown-item leadDelete" data-id="${value.id}" href="javascript:void(0)"><i
-                                                        class="dw dw-delete-3"></i>
-                                                    Delete</a>
 
                                         </div>
                                     </div>
@@ -162,7 +154,7 @@ $(document).on("change", "#setStatus", function () {
         if (result.isConfirmed) {
             $.ajax({
                 type: "post",
-                url: "/admin/change-valuation-status",
+                url: "/employee/change-valuation-status",
                 data: { "valuation_id": id, "status": status },
                 success: function (response) {
                     if (response.msg === 'success') {
@@ -178,171 +170,4 @@ $(document).on("change", "#setStatus", function () {
 })
 //Lead Status Change Code End
 
-//Assign Employee
-$(document).on('click', '.assignTochange', function () {
-    let emp_id = $(this).data('id');
-    let lead_id = $(this).data('lead');
-    let model = $('#empDataModel');
-    $('#employees_List').val(emp_id)
-    $('#leadId').val(lead_id)
-    model.modal('show')
-})
-
-$(document).on('click', '#assignLead', function () {
-    var allLeads = [];
-    $(".sub_chk:checked").each(function () {
-        allLeads.push($(this).data('id'));
-    });
-    let getTabOption = $('.filterOpTab .active').data('option')
-
-    let emp_id = $('#employees_List').val()
-    let lead_id = $('#leadId').val()
-    if (emp_id !== null) {
-        $.ajax({
-            type: "post",
-            url: "/admin/employee-assign-lead",
-            data: { "emp_id": emp_id, "lead_id": lead_id, "all_leads": allLeads },
-            success: function (response) {
-                if (response.msg === 'success') {
-                    $('#empDataModel').modal('hide');
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Leads has been assigned.',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                    $("#master").prop('checked', false);
-                    loadData(getTabOption, table);
-                }
-            }
-        });
-    } else {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Please select any one employee!',
-            // footer: '<a href="">Why do I have this issue?</a>'
-        })
-
-    }
-})
-//Assign Employee End
-
-// Assign Multiple leads Modal
-$(document).on('click', '.multipleLeadAssign', function () {
-    var allLeads = [];
-    $(".sub_chk:checked").each(function () {
-        allLeads.push($(this).data('id'));
-    });
-    if (allLeads.length > 0) {
-        let model = $('#empDataModel');
-        model.modal('show')
-    } else {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Please select atleast one lead!',
-            // footer: '<a href="">Why do I have this issue?</a>'
-        })
-    }
-})
-// Assign Multiple leads Modal End
-
-
-
-// Multiple leads Delete
-$(document).on('click', '.multipleLeadDelete', function () {
-    let getTabOption = $('.filterOpTab .active').data('option')
-    var allLeads = [];
-    $(".sub_chk:checked").each(function () {
-        allLeads.push($(this).data('id'));
-    });
-    if (allLeads.length > 0) {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You archive seleceted leads!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, archived it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    type: "post",
-                    url: "/admin/archive-lead",
-                    data: { "leads": allLeads, },
-                    success: function (response) {
-                        if (response.msg === 'success') {
-                            Swal.fire({
-                                position: 'top-end',
-                                icon: 'success',
-                                title: 'Leads has been archived.',
-                                showConfirmButton: false,
-                                timer: 1500
-                            })
-                            $("#master").prop('checked', false);
-                            loadData(getTabOption, table);
-                        }
-                    }
-                });
-            }
-            // else {
-            //     loadData(getTabOption, table);
-            //     $("#master").prop('checked', false);
-
-            // }
-        })
-    } else {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Please select atleast one lead!',
-            // footer: '<a href="">Why do I have this issue?</a>'
-        })
-    }
-})
-// Multiple leads Delete End
-
-// Single Lead Delete
-$(document).on('click', '.leadDelete', function () {
-    let getTabOption = $('.filterOpTab .active').data('option')
-    let lead_id = $(this).data('id');
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "You archive this lead!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, archived it!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                type: "post",
-                url: "/admin/archive-lead",
-                data: { "lead_id": lead_id, },
-                success: function (response) {
-                    if (response.msg === 'success') {
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'success',
-                            title: 'Lead has been archived.',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
-                        // tr.closest('tr').remove();
-                        loadData(getTabOption, table);
-                    }
-                }
-            });
-        } else {
-            loadData(getTabOption, table);
-        }
-    })
-
-})
-
-// Single Lead Delete End
 

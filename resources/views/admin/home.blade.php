@@ -12,7 +12,8 @@
     @if ($smtp == 0)
         <div class="alert alert-success alert-block">
             <button type="button" class="close" data-dismiss="alert">×</button>
-            <strong>Please Add Mail Configuration First & Use One Configuration.   <a href="{{route('admin.mailSetting')}}" class="btn btn-success btn-sm">Click Here</a></strong>
+            <strong>Please Add Mail Configuration First & Use One Configuration. <a href="{{ route('admin.mailSetting') }}"
+                    class="btn btn-success btn-sm">Click Here</a></strong>
         </div>
     @endif
     <div class="row">

@@ -22,20 +22,27 @@ class AuthController extends Controller
         $user = User::where('email', $req->email)->first();
         if (!empty($user)) {
             if ($req->type == 'admin' && $user->is_admin == 1) {
-                Auth::attempt($credentials);
-                return redirect()->intended(route('admin.home'));
+                $admin = Auth::attempt($credentials);
+                if(!empty($admin)){
+                    return redirect()->intended(route('admin.home'));
+                }
+                return redirect()->route('login')->with('failed', 'Your Password is wrong.');
+
             } else if ($req->type == 'employee' && $user->is_admin == 0) {
                 if ($user->status == 1) {
-                    Auth::attempt($credentials);
-                    return redirect()->intended(route('employee.home'));
+                    $emp = Auth::attempt($credentials);
+                    if(!empty($emp)){
+                        return redirect()->intended(route('employee.home'));
+                    }
+                    return redirect()->route('login')->with('failed', 'Your Password is wrong.');
                 } else {
-                    return redirect()->route('login')->with('faild', 'Are you blocked. Please contact Administrator.');
+                    return redirect()->route('login')->with('failed', 'Are you blocked. Please contact Administrator.');
                 }
             } else {
-                return redirect()->route('login')->with('faild', 'Unauthorize Access. Please contact Administrator.');
+                return redirect()->route('login')->with('failed', 'Unauthorize Access. Please contact Administrator.');
             }
         } else {
-            return redirect()->route('login')->with('faild', 'Your Login Details Not Exist.');
+            return redirect()->route('login')->with('failed', 'Your Login Details Not Exist.');
         }
     }
 
@@ -76,7 +83,7 @@ class AuthController extends Controller
             });
             return redirect()->route('login')->with('success', 'Your Reset Password Link Has Been Sent Your Mail Address.');
         } else {
-            return redirect()->back()->with('faild', 'Email Not Found.');
+            return redirect()->back()->with('failed', 'Email Not Found.');
         }
     }
     public function reset_password_view($token)
@@ -87,10 +94,10 @@ class AuthController extends Controller
             if ($checkToken->expire > $currentTime) {
                 return view('auth.reset_password', compact('checkToken'));
             } else {
-                return redirect()->route('login')->with('faild', 'Token Expired.');
+                return redirect()->route('login')->with('failed', 'Token Expired.');
             }
         } else {
-            return redirect()->route('login')->with('faild', 'Token mis match.');
+            return redirect()->route('login')->with('failed', 'Token mis match.');
         }
     }
     public function reset_password_post(Request $req)

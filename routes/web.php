@@ -31,6 +31,7 @@ Route::post('/forgot-password', [AuthController::class, 'forgot_password_post'])
 Route::get('/reset-password/{token}', [AuthController::class, 'reset_password_view'])->name('reset_password');
 Route::post('/reset-password', [AuthController::class, 'reset_password_post'])->name('reset_password_post');
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
+
 Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/dashboard', [HomeController::class, 'home'])->name('home');
 
@@ -64,7 +65,7 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(fun
     Route::get('/employee/employee-edit/{id}', [EmployeeController::class, 'empEdit'])->name('empEdit');
     Route::get('/employee/employee-delete/{id}', [EmployeeController::class, 'empDelete'])->name('empDelete');
     Route::post('/employee/password-change', [EmployeeController::class, 'empPasswordChange'])->name('empPasswordChange');
-    Route::get('/employee/login/{id}',[EmployeeController::class,'loginAsEmployee'])->name('empLogin');
+    Route::get('/employee/login/{id}', [EmployeeController::class, 'loginAsEmployee'])->name('empLogin');
     // Employees Route end
 
     // Mail Setting Routes
@@ -98,7 +99,9 @@ Route::name('employee.')->prefix('employee')->middleware(['auth', 'employee'])->
     Route::get('/dashboard', [EmployeeHomeController::class, 'home'])->name('home');
 
     // Get Valuation Data
-    Route::post('get-valuation-data', [HomeController::class, 'loadData'])->name('loadData');
+    Route::get('valuation/all-leads',[EmployeeHomeController::class,'viewLeadPage'])->name('viewLeadPage');
+    Route::post('/change-valuation-status', [EmployeeHomeController::class, 'changeValStatus']);
+    Route::post('get-valuation-data', [EmployeeHomeController::class, 'loadData'])->name('loadData');
     // Get Valuation Data End
 
     Route::get('/profile', function () {

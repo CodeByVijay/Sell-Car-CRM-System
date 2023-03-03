@@ -79,7 +79,7 @@ class ProfileController extends Controller
             $user->update();
             return redirect()->back()->with('success', "Dear! $user->name Your password successfully updated.");
         } else {
-            return redirect()->back()->with('faild', "Dear! $user->name Your current password is wrong.");
+            return redirect()->back()->with('failed', "Dear! $user->name Your current password is wrong.");
         }
     }
 }

@@ -60,7 +60,7 @@
                             class="text-danger">*</span></label>
                     <div class="col-sm-12 col-md-10">
                         <input class="form-control" name="mobile_no" placeholder="Mobile Number" type="text"
-                            minlength="7" maxlength="15" autocomplete="off" value="{{ old('mobile_no') }}" required>
+                            minlength="7" maxlength="15" autocomplete="off" value="{{ old('mobile_no') }}" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
                         @error('mobile_no')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -81,13 +81,16 @@
 
 
                 <div class="form-group row">
-                    <label class="col-sm-12 col-md-2 col-form-label">Password <span class="text-danger">*</span></label>
-                    <div class="col-sm-12 col-md-10">
-                        <input class="form-control" name="password" value="{{ old('password') }}" placeholder="password"
-                            type="password" autocomplete="off" required>
+                    <label class="col-sm-12 col-md-2 col-form-label" for="passwordInput">Password <span class="text-danger">*</span></label>
+                    <div class="col-sm-12 col-md-8">
+                        <input class="form-control" name="password" value="{{ old('password') }}" placeholder="Password"
+                            type="text" autocomplete="off" id="passwordInput" required>
                         @error('password')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
+                    </div>
+                    <div class="col-sm-12 col-md-2">
+                        <button type="button" id="generatePassword" class="btn btn-success btn-sm">Generate Password</button>
                     </div>
                 </div>
 
@@ -179,3 +182,15 @@
 
         </div>
     @endsection
+
+    @push('script')
+        <script>
+            $(document).ready(function () {
+                $('#generatePassword').on('click',()=>{
+                    // let randomPassword = Math.random().toString(36).slice(-10);
+                    var randPassword = new Array(10).fill("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz").map(x => (function(chars) { let umax = Math.pow(2, 32), r = new Uint32Array(1), max = umax - (umax % chars.length); do { crypto.getRandomValues(r); } while(r[0] > max); return chars[r[0] % chars.length]; })(x)).join('');
+                    $('#passwordInput').val(randPassword)
+                })
+            });
+        </script>
+    @endpush

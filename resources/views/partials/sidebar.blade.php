@@ -160,10 +160,17 @@
                         <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                        <a href="#" class="dropdown-toggle no-arrow">
+                        <a href="{{route('employee.home')}}" class="dropdown-toggle no-arrow">
                             <span class="micon dw dw-house-1"></span><span class="mtext">Home</span>
                         </a>
                     </li>
+
+                    <li>
+                        <a href="{{route('employee.viewLeadPage')}}" class="dropdown-toggle no-arrow {{ request()->is('employee/valuation*') ? 'active' : '' }}">
+                            <span class="micon dw dw-remove"></span><span class="mtext">Leads</span>
+                        </a>
+                    </li>
+
 
                     <li>
                         <div class="dropdown-divider"></div>

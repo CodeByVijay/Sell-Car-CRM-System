@@ -44,7 +44,7 @@ class HomeController extends Controller
             if ($valuation_count > 0) {
                 return response()->json(["msg" => "success", "data" => $valuations, "count" => $valuation_count, "option" => $request->option]);
             } else {
-                return response()->json(["msg" => "faild", "data" => null, "count" => "0", 'test' => '1']);
+                return response()->json(["msg" => "failed", "data" => null, "count" => "0", 'test' => '1']);
             }
         } else {
             $valuations = Valuation::leftjoin('users', 'users.id', '=', 'valuations.assign_to')->where('valuations.status', "$request->option")->select('valuations.*', 'users.title as emp_title', 'users.name as emp_name')->orderBy('valuations.id', 'desc')->get();
@@ -52,7 +52,7 @@ class HomeController extends Controller
             if ($valuation_count > 0) {
                 return response()->json(["msg" => "success", "data" => $valuations, "count" => $valuation_count, "option" => $request->option]);
             } else {
-                return response()->json(["msg" => "faild", "data" => null, "count" => "0", 'test' => '2']);
+                return response()->json(["msg" => "failed", "data" => null, "count" => "0", 'test' => '2']);
             }
         }
     }

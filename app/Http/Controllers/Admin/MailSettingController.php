@@ -82,7 +82,7 @@ class MailSettingController extends Controller
 
             return redirect()->route('admin.mailSetting')->with('success', " Mail configuration successfully " . $msg);
         } catch (\Exception $e) {
-            return redirect()->back()->with('faild', $e->getMessage());
+            return redirect()->back()->with('failed', $e->getMessage());
         }
     }
 
@@ -125,7 +125,7 @@ class MailSettingController extends Controller
             });
             return redirect()->back()->with('success', 'Test email sent successfully');
         } catch (\Exception $e) {
-            return redirect()->back()->with('faild', $e->getMessage());
+            return redirect()->back()->with('failed', $e->getMessage());
         }
     }
 }

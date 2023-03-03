@@ -49,7 +49,7 @@
                         <thead>
                             <tr>
                                 <th>
-                                   #
+                                    #
                                 </th>
                                 <th>Image</th>
                                 <th>VRM</th>
@@ -61,10 +61,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($archivedLeads as $key=>$row)
+                            @foreach ($archivedLeads as $key => $row)
                                 <tr>
                                     <td>
-                                       {{$key+1}}
+                                        {{ $key + 1 }}
                                     </td>
                                     <td><span class="lead" data-id="{{ $row->id }}"><img
                                                 src="{{ $row->image != null ? $row->image : asset('admin/src/images/avatar.png') }}"
@@ -170,43 +170,60 @@
         })
         // Delete Single Lead
 
+        let rowCount = $('#archiveTable tbody tr .dataTables_empty').length;
         // Restore All leads
         $(document).on('click', '#restoreLeadsAllBtn', function() {
+            if (rowCount !== 1) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You restore all leads!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, restore it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#restoreLeadsAllForm').submit();
+                    }
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Data Not Found!',
+                })
+            }
 
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You restore all leads!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, restore it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $('#restoreLeadsAllForm').submit();
-                }
-            });
         })
         // Restore All leads End
 
 
         // Delete All leads
         $(document).on('click', '#deleteLeadsAllBtn', function() {
-
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert leads!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $('#deleteLeadsAllForm').submit();
-                }
-            });
+            if (rowCount !== 1) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert leads!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#deleteLeadsAllForm').submit();
+                    }
+                });
+            }else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Data Not Found!',
+                })
+            }
         })
         // Delete All leads End
+
     </script>
 @endpush
