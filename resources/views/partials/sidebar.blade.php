@@ -88,7 +88,7 @@
 
 <div class="left-side-bar">
     <div class="brand-logo">
-        <a href="{{ route('admin.home') }}">
+        <a href="javascript:void(0)">
             <img src="{{ asset('admin/vendors/images/logo.svg') }}" alt="" class="dark-logo">
             <img src="{{ asset('admin/vendors/images/logo.svg') }}" alt="" class="light-logo">
         </a>
@@ -160,7 +160,7 @@
                         <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                        <a href="{{route('employee.home')}}" class="dropdown-toggle no-arrow">
+                        <a href="{{route('employee.home')}}" class="dropdown-toggle no-arrow {{ request()->is('employee/dashboard') ? 'active' : '' }}">
                             <span class="micon dw dw-house-1"></span><span class="mtext">Home</span>
                         </a>
                     </li>

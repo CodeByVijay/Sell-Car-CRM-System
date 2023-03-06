@@ -216,6 +216,7 @@
 
                     <div class="container text-right">
                         <div class="btn mt-4">
+                            <button class="btn btn-primary btn-sm changeLeadStatus"><i class="fa fa-hourglass-start"></i>  Change Status Selected Leads </button>
                             <button class="btn btn-success btn-sm multipleLeadAssign"><i class="dw dw-user3"></i> Assign Selected Leads</button>
                             <button class="btn btn-danger btn-sm multipleLeadDelete"><i class="fa fa-archive"></i> Archive Selected Leads</button>
                         </div>
@@ -282,6 +283,48 @@
         </div>
     </div>
 {{-- Employee Model Form End --}}
+
+
+    {{-- Status Model Form --}}
+    <div class="modal fade" id="statusDataModel" tabindex="-1" aria-labelledby="statusDataModelLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="statusDataModelLabel">Change Status</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="status_List" class="col-form-label">Status List:</label>
+                        <select name="employee" class="form-control" id="status_List">
+                            <option value="" selected disabled>Select Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="in-progress">In Progress</option>
+                            <option value="accepted">Accepted</option>
+                            <option value="undecided">Undecided</option>
+                            <option value="dealt-needs-delivery">Dealt-Needs Delivery</option>
+                            <option value="delivery-arranged">Delivery Arranged</option>
+                            <option value="delivered">Delivered</option>
+                            <option value="declined">Declined</option>
+                            <option value="cancelled">Cancelled</option>
+                            <option value="offer-made">Offer made</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="changeLeadStatus">Change Status</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{{-- Status Model Form End --}}
 
         @endsection
         @push('script')

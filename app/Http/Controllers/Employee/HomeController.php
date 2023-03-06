@@ -12,7 +12,7 @@ class HomeController extends Controller
 {
     public function home()
     {
-        $data['total_leads'] = Valuation::count();
+        $data['total_leads'] = Valuation::where('assign_to',auth()->user()->id)->count();
         $data['pending_leads'] = Valuation::where(['status'=>'pending','assign_to'=>auth()->user()->id])->count();
         $data['progress_leads'] = Valuation::where(['status'=>'in-progress','assign_to'=>auth()->user()->id])->count();
         $data['completed_leads']= Valuation::where(['status'=>'delivered','assign_to'=>auth()->user()->id])->count();
@@ -32,7 +32,41 @@ class HomeController extends Controller
 
          $data['allLeads'] = json_encode($allLeadsData);
 
-        return view('admin.home', $data);
+        //  Complete Percent
+        if($data['completed_leads'] == 0){
+            $data['completePercent'] = 0;
+        }else{
+            $completePer = ($data['completed_leads']/$data['total_leads'])*100;
+            $data['completePercent'] = round($completePer);
+        }
+
+
+        //  All Leads Percent
+        if ($data['total_leads'] == 0) {
+            $data['allLeadsPercent'] = 0;
+        } else {
+            $completePer = ($data['total_leads'] / $data['total_leads']) * 100;
+            $data['allLeadsPercent'] = round($completePer);
+        }
+
+        //  Pending Leads Percent
+        if ($data['pending_leads'] == 0) {
+            $data['pendingLeadsPercent'] = 0;
+        } else {
+            $completePer = ($data['pending_leads'] / $data['total_leads']) * 100;
+            $data['pendingLeadsPercent'] = round($completePer);
+        }
+
+        // In Progress Leads Percent
+        if ($data['progress_leads'] == 0) {
+            $data['inProgressLeadsPercent'] = 0;
+        } else {
+            $completePer = ($data['progress_leads'] / $data['total_leads']) * 100;
+            $data['inProgressLeadsPercent'] = round($completePer);
+        }
+
+
+        return view('employee.home', $data);
     }
 
     public function viewLeadPage(){
@@ -67,5 +101,12 @@ class HomeController extends Controller
         $val_status->status = $req->status;
         $val_status->update();
         return response()->json(["msg" => "success", "data" => $val_status]);
+    }
+
+    public function changeValStatusMultiple(Request $req){
+        $lead_status = Valuation::whereIn('id',$req->all_leads)->update([
+            'status'=>$req->status
+        ]);
+        return response()->json(["msg" => "success", "data" => $lead_status]);
     }
 }

@@ -43,6 +43,7 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(fun
     })->name('leads');
     Route::post('/get-valuation-data', [HomeController::class, 'loadData'])->name('loadData');
     Route::post('/change-valuation-status', [HomeController::class, 'changeValStatus']);
+    Route::post('change-valuation-status-multiple', [HomeController::class, 'changeValStatusMultiple'])->name('changeValStatusMultiple');
     Route::post('/employee-assign-lead', [HomeController::class, 'assignLead']);
     // Delete Lead(Archive)
     Route::post('/archive-lead', [HomeController::class, 'archiveLead']);
@@ -102,6 +103,7 @@ Route::name('employee.')->prefix('employee')->middleware(['auth', 'employee'])->
     Route::get('valuation/all-leads',[EmployeeHomeController::class,'viewLeadPage'])->name('viewLeadPage');
     Route::post('/change-valuation-status', [EmployeeHomeController::class, 'changeValStatus']);
     Route::post('get-valuation-data', [EmployeeHomeController::class, 'loadData'])->name('loadData');
+    Route::post('change-valuation-status-multiple', [EmployeeHomeController::class, 'changeValStatusMultiple'])->name('changeValStatusMultiple');
     // Get Valuation Data End
 
     Route::get('/profile', function () {

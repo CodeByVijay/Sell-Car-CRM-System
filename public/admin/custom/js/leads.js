@@ -19,6 +19,7 @@ $(document).ready(function () {
 });
 
 // Load Data Code
+
 let table = '#valuationTable';
 
 $('.filterTab').click(function () {
@@ -28,6 +29,9 @@ $('.filterTab').click(function () {
     $(this).addClass('active')
     let tbl = $('.filterDataTable').attr('id', option)
     table = `#${option}`;
+    $("#master").prop("checked", false);
+
+
     loadData(option, table);
 })
 
@@ -55,7 +59,7 @@ function loadData(filterOption, table) {
                             <span class="dt-checkbox-label"></span></div></td>
                                         <td>
                                             <select class="status" id="setStatus" data-id="${value.id}">
-                                                <option value="">Set status</option>
+                                                <option value="" selected disabled>Set status</option>
                                                 <option value="pending" ${value.status == 'pending' ? 'selected' : ''}>Pending</option>
                                                 <option value="in-progress" ${value.status == 'in-progress' ? 'selected' : ''}>In Progress</option>
                                                 <option value="accepted" ${value.status == 'accepted' ? 'selected' : ''}>Accepted</option>
@@ -345,4 +349,62 @@ $(document).on('click', '.leadDelete', function () {
 })
 
 // Single Lead Delete End
+
+
+// Change Multiple leads status Modal
+$(document).on("click", ".changeLeadStatus", function () {
+    var allLeads = [];
+    $(".sub_chk:checked").each(function () {
+        allLeads.push($(this).data("id"));
+    });
+    if (allLeads.length > 0) {
+        let model = $("#statusDataModel");
+        model.modal("show");
+    } else {
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Please select at least one lead!",
+        });
+    }
+});
+
+$(document).on("click", "#changeLeadStatus", function () {
+    var allLeads = [];
+    $(".sub_chk:checked").each(function () {
+        allLeads.push($(this).data("id"));
+    });
+    let getTabOption = $(".filterOpTab .active").data("option");
+
+    let status = $("#status_List").val();
+    if (status !== null) {
+        $.ajax({
+            type: "post",
+            url: "/admin/change-valuation-status-multiple",
+            data: { all_leads: allLeads, status: status },
+            success: function (response) {
+                if (response.msg === "success") {
+                    $("#statusDataModel").modal("hide");
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Leads status has been changed.",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    $("#master").prop("checked", false);
+                    $("#status_List").val('')
+                    loadData(getTabOption, table);
+                }
+            },
+        });
+    } else {
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Please select any one status!",
+        });
+    }
+});
+// Change Multiple leads status Modal End
 

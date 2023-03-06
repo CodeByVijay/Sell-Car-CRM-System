@@ -285,7 +285,7 @@
                         msg.html('')
                         changePWbtn.attr('disabled', true)
                     } else if (password.length < 8 && confirmPassword.length < 8) {
-                        msg.html('Please enter minimum 8 digit password.')
+                        msg.html('Please enter minimum 8 digit password.').css('color','red')
                         changePWbtn.attr('disabled', true)
                     }else {
                         if (password != confirmPassword) {

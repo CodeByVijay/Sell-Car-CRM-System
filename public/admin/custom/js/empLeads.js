@@ -1,79 +1,135 @@
 $(document).ready(function () {
     // Search Option Hide Show
-    $('.search_box_main').hide();
-    $('#searchOptions').click(function () {
-        $('.search_box_main').toggle('slow');
-    })
+    $(".search_box_main").hide();
+    $("#searchOptions").click(function () {
+        $(".search_box_main").toggle("slow");
+    });
     // Search Option Hide ShowEnd
 
     // Checkbox Selection
-    $('#master').on('click', function (e) {
-        if ($(this).is(':checked', true)) {
-            $(".sub_chk").prop('checked', true);
+    $("#master").on("click", function (e) {
+        if ($(this).is(":checked", true)) {
+            $(".sub_chk").prop("checked", true);
         } else {
-            $(".sub_chk").prop('checked', false);
+            $(".sub_chk").prop("checked", false);
         }
     });
     // Checkbox Selection End
 });
 
 // Load Data Code
-let table = '#valuationTable';
+let table = "#valuationTable";
 
-$('.filterTab').click(function () {
-    $('.filterTab').removeClass('active');
-    $('.filterOpTab a span').html('')
-    let option = $(this).data('option')
-    $(this).addClass('active')
-    let tbl = $('.filterDataTable').attr('id', option)
+$(".filterTab").click(function () {
+    $(".filterTab").removeClass("active");
+    $(".filterOpTab a span").html("");
+    let option = $(this).data("option");
+    $(this).addClass("active");
+    let tbl = $(".filterDataTable").attr("id", option);
     table = `#${option}`;
-    loadData(option, table);
-})
 
-let filterOptionData = 'all';
+
+    $("#master").prop("checked", false);
+    loadData(option, table);
+});
+
+let filterOptionData = "all";
 loadData(filterOptionData, table);
 
 function loadData(filterOption, table) {
-    let dataTable = $(`${table}`)
+    let dataTable = $(`${table}`);
     $.ajax({
         type: "post",
         url: "/employee/get-valuation-data",
         data: {
-            "option": filterOption
+            option: filterOption,
         },
         success: function (response) {
-            $('#table_body').empty();
+            $("#table_body").empty();
 
-            if (response.msg === 'success' && response.data !== null) {
-
+            if (response.msg === "success" && response.data !== null) {
                 $.each(response.data, function (key, value) {
-
-                    $('#table_body').append(`<tr id="${value.id}">
+                    $("#table_body").append(`<tr id="${value.id}">
                                         <td><div class="dt-checkbox">
-                            <input type="checkbox" data-id="${value.id}" class="sub_chk">
+                            <input type="checkbox" data-id="${
+                                value.id
+                            }" class="sub_chk">
                             <span class="dt-checkbox-label"></span></div></td>
                                         <td>
-                                            <select class="status" id="setStatus" data-id="${value.id}">
-                                                <option value="">Set status</option>
-                                                <option value="pending" ${value.status == 'pending' ? 'selected' : ''}>Pending</option>
-                                                <option value="in-progress" ${value.status == 'in-progress' ? 'selected' : ''}>In Progress</option>
-                                                <option value="accepted" ${value.status == 'accepted' ? 'selected' : ''}>Accepted</option>
-                                                <option value="undecided" ${value.status == 'undecided' ? 'selected' : ''}>Undecided</option>
-                                                <option value="dealt-needs-delivery" ${value.status == 'dealt-needs-delivery' ? 'selected' : ''}>Dealt-Needs Delivery</option>
-                                                <option value="delivery-arranged" ${value.status == 'delivery-arranged' ? 'selected' : ''}>Delivery Arranged</option>
-                                                <option value="delivered" ${value.status == 'delivered' ? 'selected' : ''}>Delivered</option>
-                                                <option value="declined" ${value.status == 'declined' ? 'selected' : ''}>Declined</option>
-                                                <option value="cancelled" ${value.status == 'cancelled' ? 'selected' : ''}>Cancelled</option>
-                                                <option value="offer-made" ${value.status == 'offer-made' ? 'selected' : ''}>Offer made</option>
+                                            <select class="status" id="setStatus" data-id="${
+                                                value.id
+                                            }">
+                                                <option value="" selected disabled>Set status</option>
+                                                <option value="pending" ${
+                                                    value.status == "pending"
+                                                        ? "selected"
+                                                        : ""
+                                                }>Pending</option>
+                                                <option value="in-progress" ${
+                                                    value.status ==
+                                                    "in-progress"
+                                                        ? "selected"
+                                                        : ""
+                                                }>In Progress</option>
+                                                <option value="accepted" ${
+                                                    value.status == "accepted"
+                                                        ? "selected"
+                                                        : ""
+                                                }>Accepted</option>
+                                                <option value="undecided" ${
+                                                    value.status == "undecided"
+                                                        ? "selected"
+                                                        : ""
+                                                }>Undecided</option>
+                                                <option value="dealt-needs-delivery" ${
+                                                    value.status ==
+                                                    "dealt-needs-delivery"
+                                                        ? "selected"
+                                                        : ""
+                                                }>Dealt-Needs Delivery</option>
+                                                <option value="delivery-arranged" ${
+                                                    value.status ==
+                                                    "delivery-arranged"
+                                                        ? "selected"
+                                                        : ""
+                                                }>Delivery Arranged</option>
+                                                <option value="delivered" ${
+                                                    value.status == "delivered"
+                                                        ? "selected"
+                                                        : ""
+                                                }>Delivered</option>
+                                                <option value="declined" ${
+                                                    value.status == "declined"
+                                                        ? "selected"
+                                                        : ""
+                                                }>Declined</option>
+                                                <option value="cancelled" ${
+                                                    value.status == "cancelled"
+                                                        ? "selected"
+                                                        : ""
+                                                }>Cancelled</option>
+                                                <option value="offer-made" ${
+                                                    value.status == "offer-made"
+                                                        ? "selected"
+                                                        : ""
+                                                }>Offer made</option>
                                             </select>
                                         </td>
 
                                         <td>
-                                            <a href="https://dorksd10.sg-host.com/crm/details.php?vrm=${value.registration}" class="vrm_box"><span class="vrm">${value.registration}</span></a>
+                                            <a href="https://dorksd10.sg-host.com/crm/details.php?vrm=${
+                                                value.registration
+                                            }" class="vrm_box"><span class="vrm">${value.registration}</span></a>
                                         </td>
-                                        <td><span class="cust_name">${value.full_name}</span></td>
-                                        <td><span class="make">${value.make}</span></td>
-                                        <td><span class="postcode">${value.postcode}</span></td>
+                                        <td><span class="cust_name">${
+                                            value.full_name
+                                        }</span></td>
+                                        <td><span class="make">${
+                                            value.make
+                                        }</span></td>
+                                        <td><span class="postcode">${
+                                            value.postcode
+                                        }</span></td>
                                         <td><span class="tags">-</span></td>
                                         <td class="action_box">
 
@@ -93,44 +149,42 @@ function loadData(filterOption, table) {
 
                                         </td>
                                     </tr>`);
-                })
-
-
-
+                });
             } else {
-                $('#table_body').append(
-                    `<tr><td colspan="9" class="text-center"><span>No Data Found.</span></td></tr>`);
+                $("#table_body").append(
+                    `<tr><td colspan="9" class="text-center"><span>No Data Found.</span></td></tr>`
+                );
             }
-            $('.filterOpTab .active span').html(`(${response.count})`)
+            $(".filterOpTab .active span").html(`(${response.count})`);
 
             dataTable.DataTable({
-                'scrollCollapse': true,
-                'autoWidth': false,
+                scrollCollapse: true,
+                autoWidth: false,
                 // 'responsive': true,
-                "retrieve": true,
-                "lengthMenu": [
+                retrieve: true,
+                lengthMenu: [
                     [10, 25, 50, 100, -1],
-                    [10, 25, 50, 100, "All"]
+                    [10, 25, 50, 100, "All"],
                 ],
-                "language": {
-                    "info": "_START_-_END_ of _TOTAL_ entries",
+                language: {
+                    info: "_START_-_END_ of _TOTAL_ entries",
                     searchPlaceholder: "Search",
                     paginate: {
                         next: '<i class="ion-chevron-right"></i>',
-                        previous: '<i class="ion-chevron-left"></i>'
-                    }
+                        previous: '<i class="ion-chevron-left"></i>',
+                    },
                 },
-                'columnDefs': [{
-                    'targets': 0,
-                    'searchable': false,
-                    'orderable': false,
-                    'className': 'dt-body-center',
-                }],
-                'order': [
-                    [1, 'asc']
-                ]
+                columnDefs: [
+                    {
+                        targets: 0,
+                        searchable: false,
+                        orderable: false,
+                        className: "dt-body-center",
+                    },
+                ],
+                order: [[1, "asc"]],
             });
-        }
+        },
     });
 }
 // Load Data Code End
@@ -138,36 +192,91 @@ function loadData(filterOption, table) {
 //Lead Status Change Code
 $(document).on("change", "#setStatus", function () {
     let tr = $(this);
-    let id = $(this).data('id');
+    let id = $(this).data("id");
     let status = $(this).val();
-    let getTabOption = $('.filterOpTab .active').data('option')
+    let getTabOption = $(".filterOpTab .active").data("option");
 
     Swal.fire({
-        title: 'Are you sure?',
+        title: "Are you sure?",
         text: "You change status this lead!",
-        icon: 'warning',
+        icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, change it!'
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, change it!",
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
                 type: "post",
                 url: "/employee/change-valuation-status",
-                data: { "valuation_id": id, "status": status },
+                data: { valuation_id: id, status: status },
                 success: function (response) {
-                    if (response.msg === 'success') {
-                        tr.closest('tr').remove();
+                    if (response.msg === "success") {
+                        tr.closest("tr").remove();
                         loadData(getTabOption, table);
                     }
-                }
+                },
             });
         } else {
             loadData(getTabOption, table);
         }
-    })
-})
+    });
+});
 //Lead Status Change Code End
 
+// Change Multiple leads status Modal
+$(document).on("click", ".changeLeadStatus", function () {
+    var allLeads = [];
+    $(".sub_chk:checked").each(function () {
+        allLeads.push($(this).data("id"));
+    });
+    if (allLeads.length > 0) {
+        let model = $("#statusDataModel");
+        model.modal("show");
+    } else {
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Please select at least one lead!",
+        });
+    }
+});
 
+$(document).on("click", "#changeLeadStatus", function () {
+    var allLeads = [];
+    $(".sub_chk:checked").each(function () {
+        allLeads.push($(this).data("id"));
+    });
+    let getTabOption = $(".filterOpTab .active").data("option");
+
+    let status = $("#status_List").val();
+    if (status !== null) {
+        $.ajax({
+            type: "post",
+            url: "/employee/change-valuation-status-multiple",
+            data: { all_leads: allLeads, status: status },
+            success: function (response) {
+                if (response.msg === "success") {
+                    $("#statusDataModel").modal("hide");
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Leads status has been changed.",
+                        showConfirmButton: false,
+                        timer: 2000,
+                    });
+                    $("#master").prop("checked", false);
+                    $("#status_List").val('')
+                    loadData(getTabOption, table);
+                }
+            },
+        });
+    } else {
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Please select any one status!",
+        });
+    }
+});
+// Change Multiple leads status Modal End
